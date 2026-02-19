@@ -72,8 +72,18 @@ struct SettingsView: View {
                         withAnimation { recordingShortcutManager.secondaryRecordingShortcut = .custom }
                     }
                 }
+
+                Toggle(isOn: $recordingShortcutManager.isDoubleTapForHandsFreeEnabled) {
+                    HStack(spacing: 4) {
+                        Text("Require Double-Tap for Hands-Free")
+                        InfoTip("Applies to modifier hotkeys only. OFF: release once to toggle (and ignore Cmd/Ctrl shortcut chords). ON: hold for push-to-talk or double-tap for hands-free.")
+                    }
+                }
+                .disabled(!recordingShortcutManager.hasModifierRecordingShortcutConfigured)
             } header: {
                 Text("Shortcuts")
+            } footer: {
+                Text("Modifier hotkeys are chord-safe: app shortcuts like Cmd+C/Cmd+V won't trigger recording.")
             }
 
             Section("Additional Shortcuts") {

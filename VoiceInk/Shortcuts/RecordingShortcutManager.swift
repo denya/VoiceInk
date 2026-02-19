@@ -1,6 +1,95 @@
 import AppKit
 import Foundation
 
+enum ModifierHotkeyReleaseAction: Equatable {
+    case none
+    case toggle
+    case stopPushToTalk
+}
+
+struct ModifierHotkeyPressStateMachine {
+    private(set) var isPressed = false
+    private(set) var activeModifierKeyCode: UInt16?
+    private(set) var pressStartTime: TimeInterval?
+    private(set) var didChordWithAnotherKey = false
+    private(set) var didStartPushToTalk = false
+    private(set) var lastCleanTapReleaseTime: TimeInterval?
+
+    let doubleTapWindow: TimeInterval
+
+    init(doubleTapWindow: TimeInterval = 0.3) {
+        self.doubleTapWindow = doubleTapWindow
+    }
+
+    mutating func beginPress(keyCode: UInt16, eventTime: TimeInterval) {
+        isPressed = true
+        activeModifierKeyCode = keyCode
+        pressStartTime = eventTime
+        didChordWithAnotherKey = false
+        didStartPushToTalk = false
+    }
+
+    mutating func markChord() {
+        guard isPressed else { return }
+        didChordWithAnotherKey = true
+    }
+
+    func canStartPushToTalk(doubleTapEnabled: Bool) -> Bool {
+        doubleTapEnabled && isPressed && !didChordWithAnotherKey && !didStartPushToTalk
+    }
+
+    mutating func markPushToTalkStarted() {
+        guard isPressed else { return }
+        didStartPushToTalk = true
+        lastCleanTapReleaseTime = nil
+    }
+
+    mutating func endPress(doubleTapEnabled: Bool, eventTime: TimeInterval) -> ModifierHotkeyReleaseAction {
+        guard isPressed else { return .none }
+
+        defer {
+            isPressed = false
+            activeModifierKeyCode = nil
+            pressStartTime = nil
+            didChordWithAnotherKey = false
+            didStartPushToTalk = false
+        }
+
+        if didStartPushToTalk {
+            lastCleanTapReleaseTime = nil
+            return .stopPushToTalk
+        }
+
+        if didChordWithAnotherKey {
+            lastCleanTapReleaseTime = nil
+            return .none
+        }
+
+        if !doubleTapEnabled {
+            lastCleanTapReleaseTime = nil
+            return .toggle
+        }
+
+        if let lastRelease = lastCleanTapReleaseTime,
+           eventTime - lastRelease <= doubleTapWindow {
+            lastCleanTapReleaseTime = nil
+            return .toggle
+        }
+
+        lastCleanTapReleaseTime = eventTime
+        return .none
+    }
+
+    mutating func reset() {
+        isPressed = false
+        activeModifierKeyCode = nil
+        pressStartTime = nil
+        didChordWithAnotherKey = false
+        didStartPushToTalk = false
+        lastCleanTapReleaseTime = nil
+    }
+}
+
 @MainActor
 class RecordingShortcutManager: ObservableObject {
     @Published var primaryRecordingShortcut: ShortcutSelection {
@@ -40,6 +129,12 @@ class RecordingShortcutManager: ObservableObject {
             UserDefaults.standard.set(middleClickActivationDelay, forKey: "middleClickActivationDelay")
         }
     }
+    @Published var isDoubleTapForHandsFreeEnabled: Bool {
+        didSet {
+            UserDefaults.standard.set(isDoubleTapForHandsFreeEnabled, forKey: Self.doubleTapForHandsFreeKey)
+            shortcutModeHandler.reset()
+        }
+    }
 
     private var engine: VoiceInkEngine
     private var recorderUIManager: RecorderUIManager
@@ -58,6 +153,7 @@ class RecordingShortcutManager: ObservableObject {
     // Middle-click event monitoring
     private var middleClickMonitors: [Any?] = []
     private var middleClickTask: Task<Void, Never>?
+    private static let doubleTapForHandsFreeKey = "isDoubleTapForHandsFreeEnabled"
 
     enum Mode: String, CaseIterable {
         case toggle = "toggle"
@@ -111,6 +207,7 @@ class RecordingShortcutManager: ObservableObject {
 
         self.isMiddleClickToggleEnabled = UserDefaults.standard.bool(forKey: "isMiddleClickToggleEnabled")
         self.middleClickActivationDelay = UserDefaults.standard.integer(forKey: "middleClickActivationDelay")
+        self.isDoubleTapForHandsFreeEnabled = UserDefaults.standard.bool(forKey: Self.doubleTapForHandsFreeKey)
 
         let shortcutModeHandler = RecordingShortcutModeHandler(
             canHandleShortcutAction: {
@@ -127,6 +224,12 @@ class RecordingShortcutManager: ObservableObject {
             },
             cancelRecording: {
                 await recorderUIManager.cancelRecording()
+            },
+            isDoubleTapForHandsFreeEnabled: {
+                UserDefaults.standard.bool(forKey: Self.doubleTapForHandsFreeKey)
+            },
+            isModifierOnlyShortcut: { action in
+                ShortcutStore.shortcut(for: action)?.isModifierOnly == true
             }
         )
 
@@ -315,6 +418,14 @@ class RecordingShortcutManager: ObservableObject {
         return isPrimaryShortcutConfigured && isSecondaryShortcutConfigured
     }
 
+    var hasModifierRecordingShortcutConfigured: Bool {
+        let primaryIsModifier = primaryRecordingShortcut == .custom &&
+            ShortcutStore.shortcut(for: .primaryRecording)?.isModifierOnly == true
+        let secondaryIsModifier = secondaryRecordingShortcut == .custom &&
+            ShortcutStore.shortcut(for: .secondaryRecording)?.isModifierOnly == true
+        return primaryIsModifier || secondaryIsModifier
+    }
+
     func updateShortcutStatus() {
         // Called when a shortcut changes
         refreshShortcutMonitoring()
@@ -347,6 +458,8 @@ final class RecordingShortcutModeHandler {
     private let recordingState: @MainActor () -> RecordingState
     private let toggleRecorderPanel: @MainActor (UUID?) async -> Void
     private let cancelRecording: @MainActor () async -> Void
+    private let isDoubleTapForHandsFreeEnabled: @MainActor () -> Bool
+    private let isModifierOnlyShortcut: @MainActor (ShortcutAction) -> Bool
 
     private var shortcutPressStartTime: TimeInterval?
     private var isHandsFreeRecording = false
@@ -355,6 +468,9 @@ final class RecordingShortcutModeHandler {
     private var interruptedRecordingActions = Set<ShortcutAction>()
     private var activeShortcutCanCancelAccidentalStart = false
     private var lastShortcutPressTime: Date?
+    private var modifierPressState = ModifierHotkeyPressStateMachine()
+    private var modifierHoldTask: Task<Void, Never>?
+    private var activeModifierModeId: UUID?
 
     private let shortcutPressCooldown: TimeInterval = 0.5
     private let hybridPressThreshold: TimeInterval = 0.5
@@ -364,16 +480,24 @@ final class RecordingShortcutModeHandler {
         isRecorderVisible: @escaping @MainActor () -> Bool,
         recordingState: @escaping @MainActor () -> RecordingState,
         toggleRecorderPanel: @escaping @MainActor (UUID?) async -> Void,
-        cancelRecording: @escaping @MainActor () async -> Void
+        cancelRecording: @escaping @MainActor () async -> Void,
+        isDoubleTapForHandsFreeEnabled: @escaping @MainActor () -> Bool,
+        isModifierOnlyShortcut: @escaping @MainActor (ShortcutAction) -> Bool
     ) {
         self.canHandleShortcutAction = canHandleShortcutAction
         self.isRecorderVisible = isRecorderVisible
         self.recordingState = recordingState
         self.toggleRecorderPanel = toggleRecorderPanel
         self.cancelRecording = cancelRecording
+        self.isDoubleTapForHandsFreeEnabled = isDoubleTapForHandsFreeEnabled
+        self.isModifierOnlyShortcut = isModifierOnlyShortcut
     }
 
     func reset() {
+        modifierHoldTask?.cancel()
+        modifierHoldTask = nil
+        modifierPressState.reset()
+        activeModifierModeId = nil
         isShortcutPressed = false
         shortcutPressStartTime = nil
         isHandsFreeRecording = false
@@ -388,6 +512,11 @@ final class RecordingShortcutModeHandler {
         mode: RecordingShortcutManager.Mode,
         modeId: UUID? = nil
     ) async {
+        if usesModifierReleaseGate(action: action, mode: mode) {
+            await handleModifierReleaseGateKeyDown(action: action, eventTime: eventTime, mode: mode, modeId: modeId)
+            return
+        }
+
         if interruptedRecordingActions.remove(action) != nil {
             return
         }
@@ -435,6 +564,11 @@ final class RecordingShortcutModeHandler {
         mode: RecordingShortcutManager.Mode,
         modeId: UUID? = nil
     ) async {
+        if usesModifierReleaseGate(action: action, mode: mode) {
+            await handleModifierReleaseGateKeyUp(action: action, eventTime: eventTime, mode: mode, modeId: modeId)
+            return
+        }
+
         guard isShortcutPressed, activeRecordingShortcutAction == action else { return }
         isShortcutPressed = false
         activeRecordingShortcutAction = nil
@@ -464,6 +598,18 @@ final class RecordingShortcutModeHandler {
     }
 
     func handleInterruption(action: ShortcutAction) async {
+        if usesModifierReleaseGate(action: action, mode: .hybrid),
+           isShortcutPressed,
+           activeRecordingShortcutAction == action,
+           modifierPressState.isPressed {
+            if !modifierPressState.didStartPushToTalk {
+                modifierPressState.markChord()
+                modifierHoldTask?.cancel()
+                modifierHoldTask = nil
+            }
+            return
+        }
+
         guard isShortcutPressed, activeRecordingShortcutAction == action else {
             if canCurrentShortcutPressCancelAccidentalStart {
                 interruptedRecordingActions.insert(action)
@@ -479,5 +625,77 @@ final class RecordingShortcutModeHandler {
 
     private var canCurrentShortcutPressCancelAccidentalStart: Bool {
         !isRecorderVisible() && recordingState() == .idle
+    }
+
+    private func usesModifierReleaseGate(action: ShortcutAction, mode: RecordingShortcutManager.Mode) -> Bool {
+        isModifierOnlyShortcut(action) && mode != .pushToTalk
+    }
+
+    private func handleModifierReleaseGateKeyDown(
+        action: ShortcutAction,
+        eventTime: TimeInterval,
+        mode: RecordingShortcutManager.Mode,
+        modeId: UUID?
+    ) async {
+        guard !isShortcutPressed else { return }
+
+        isShortcutPressed = true
+        activeRecordingShortcutAction = action
+        activeModifierModeId = modeId
+        modifierPressState.beginPress(keyCode: 0, eventTime: eventTime)
+
+        guard mode == .hybrid, isDoubleTapForHandsFreeEnabled() else { return }
+
+        modifierHoldTask?.cancel()
+        modifierHoldTask = Task { [weak self, eventTime] in
+            do {
+                try await Task.sleep(nanoseconds: UInt64((self?.hybridPressThreshold ?? 0.5) * 1_000_000_000))
+                await self?.handleModifierHoldThresholdReached(expectedPressStartTime: eventTime)
+            } catch {
+                // Cancelled
+            }
+        }
+    }
+
+    private func handleModifierReleaseGateKeyUp(
+        action: ShortcutAction,
+        eventTime: TimeInterval,
+        mode: RecordingShortcutManager.Mode,
+        modeId: UUID?
+    ) async {
+        guard isShortcutPressed, activeRecordingShortcutAction == action else { return }
+
+        modifierHoldTask?.cancel()
+        modifierHoldTask = nil
+        isShortcutPressed = false
+        activeRecordingShortcutAction = nil
+        activeModifierModeId = nil
+
+        let releaseAction = modifierPressState.endPress(
+            doubleTapEnabled: mode == .hybrid && isDoubleTapForHandsFreeEnabled(),
+            eventTime: eventTime
+        )
+
+        switch releaseAction {
+        case .none:
+            return
+        case .toggle:
+            guard canHandleShortcutAction() else { return }
+            await toggleRecorderPanel(modeId)
+        case .stopPushToTalk:
+            guard canHandleShortcutAction() else { return }
+            await toggleRecorderPanel(modeId)
+        }
+    }
+
+    private func handleModifierHoldThresholdReached(expectedPressStartTime: TimeInterval) async {
+        guard modifierPressState.pressStartTime == expectedPressStartTime,
+              modifierPressState.canStartPushToTalk(doubleTapEnabled: isDoubleTapForHandsFreeEnabled()),
+              canHandleShortcutAction() else {
+            return
+        }
+
+        modifierPressState.markPushToTalkStarted()
+        await toggleRecorderPanel(activeModifierModeId)
     }
 }

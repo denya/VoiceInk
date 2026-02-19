@@ -36,6 +36,7 @@ class SystemInfoService {
             Secondary Shortcut: \(getSecondaryShortcut())
             Middle-Click Recording: \(UserDefaults.standard.bool(forKey: "isMiddleClickToggleEnabled"))
             Middle-Click Activation Delay: \(UserDefaults.standard.integer(forKey: "middleClickActivationDelay")) ms
+            Require Double-Tap for Hands-Free: \(UserDefaults.standard.bool(forKey: "isDoubleTapForHandsFreeEnabled"))
 
             TRANSCRIPTION SETTINGS:
             Selected Model: \(getCurrentTranscriptionModel())

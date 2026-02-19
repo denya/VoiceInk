@@ -133,17 +133,14 @@ class ImportExportService {
                 return (config.id.uuidString, ShortcutBackup(shortcut))
             })
 
-        // Export custom models
         let customModels = CustomCloudModelManager.shared.customModels.map { CustomModelBackup(model: $0) }
 
-        // Fetch vocabulary words from SwiftData
         var exportedDictionaryItems: [WordBackup]? = nil
         let vocabularyDescriptor = FetchDescriptor<VocabularyWord>()
         if let items = try? modelContext.fetch(vocabularyDescriptor), !items.isEmpty {
             exportedDictionaryItems = items.map { WordBackup(word: $0.word) }
         }
 
-        // Fetch word replacements from SwiftData
         var exportedWordReplacements: [String: String]? = nil
         let replacementsDescriptor = FetchDescriptor<WordReplacement>()
         if let replacements = try? modelContext.fetch(replacementsDescriptor), !replacements.isEmpty {
@@ -186,7 +183,9 @@ class ImportExportService {
             isTextFormattingEnabled: UserDefaults.standard.bool(forKey: keyIsTextFormattingEnabled),
             isExperimentalFeaturesEnabled: UserDefaults.standard.bool(forKey: "isExperimentalFeaturesEnabled"),
             restoreClipboardAfterPaste: UserDefaults.standard.bool(forKey: "restoreClipboardAfterPaste"),
-            clipboardRestoreDelay: UserDefaults.standard.double(forKey: "clipboardRestoreDelay")
+            clipboardRestoreDelay: UserDefaults.standard.double(forKey: "clipboardRestoreDelay"),
+            useAppleScriptPaste: UserDefaults.standard.bool(forKey: "useAppleScriptPaste"),
+            isDoubleTapForHandsFreeEnabled: recordingShortcutManager.isDoubleTapForHandsFreeEnabled
         )
 
         let exportedSettings = BackupFile(

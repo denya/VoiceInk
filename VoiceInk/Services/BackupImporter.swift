@@ -209,6 +209,12 @@ enum BackupImporter {
         if let clipboardDelay = general.clipboardRestoreDelay {
             UserDefaults.standard.set(clipboardDelay, forKey: "clipboardRestoreDelay")
         }
+        if let appleScriptPaste = general.useAppleScriptPaste {
+            UserDefaults.standard.set(appleScriptPaste, forKey: "useAppleScriptPaste")
+        }
+        if let doubleTapForHandsFree = general.isDoubleTapForHandsFreeEnabled {
+            recordingShortcutManager.isDoubleTapForHandsFreeEnabled = doubleTapForHandsFree
+        }
 
         print("Successfully imported general settings.")
     }
