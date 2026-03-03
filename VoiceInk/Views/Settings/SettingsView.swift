@@ -76,7 +76,7 @@ struct SettingsView: View {
                 Toggle(isOn: $recordingShortcutManager.isDoubleTapForHandsFreeEnabled) {
                     HStack(spacing: 4) {
                         Text("Require Double-Tap for Hands-Free")
-                        InfoTip("Applies to modifier hotkeys only. OFF: release once to toggle (and ignore Cmd/Ctrl shortcut chords). ON: hold for push-to-talk or double-tap for hands-free.")
+                        InfoTip("Applies to modifier hotkeys only. OFF: short tap and release to toggle (and ignore Cmd/Ctrl shortcut chords). ON: hold for push-to-talk or double-tap for hands-free.")
                     }
                 }
                 .disabled(!recordingShortcutManager.hasModifierRecordingShortcutConfigured)
@@ -359,6 +359,171 @@ struct SettingsView: View {
         .fixedSize()
     }
 }
+
+// MARK: - Expandable Settings Row (entire row clickable)
+
+struct ExpandableSettingsRow<Content: View>: View {
+    @Binding var isExpanded: Bool
+    @Binding var isEnabled: Bool
+    let label: String
+    var infoMessage: String? = nil
+    var infoURL: String? = nil
+    @ViewBuilder let content: () -> Content
+
+    @State private var isHandlingToggleChange = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Main row - entire area is tappable
+            HStack {
+                Toggle(isOn: $isEnabled) {
+                    HStack(spacing: 4) {
+                        Text(label)
+                        if let message = infoMessage {
+                            if let url = infoURL {
+                                InfoTip(message, learnMoreURL: url)
+                            } else {
+                                InfoTip(message)
+                            }
+                        }
+                    }
+                }
+
+                Spacer()
+
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.secondary)
+                    .rotationEffect(.degrees(isEnabled && isExpanded ? 90 : 0))
+                    .opacity(isEnabled ? 1 : 0.4)
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                guard !isHandlingToggleChange else { return }
+                if isEnabled {
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isExpanded.toggle()
+                    }
+                }
+            }
+
+            // Expanded content with proper spacing
+            if isEnabled && isExpanded {
+                VStack(alignment: .leading, spacing: 8) {
+                    content()
+                }
+                .padding(.top, 12)
+                .padding(.leading, 4)
+                .transition(.opacity.combined(with: .move(edge: .top)))
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: isExpanded)
+        .onChange(of: isEnabled) { _, newValue in
+            isHandlingToggleChange = true
+            if newValue {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isExpanded = true
+                }
+            } else {
+                isExpanded = false
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isHandlingToggleChange = false
+            }
+        }
+    }
+}
+
+// MARK: - Power Mode Section
+
+struct PowerModeSection: View {
+    @ObservedObject private var powerModeManager = PowerModeManager.shared
+    @AppStorage("powerModeUIFlag") private var powerModeUIFlag = false
+    @AppStorage("powerModePersistConfig") private var powerModePersistSettings = false
+    @State private var showDisableAlert = false
+    @State private var isExpanded = false
+
+    var body: some View {
+        Section {
+            ExpandableSettingsRow(
+                isExpanded: $isExpanded,
+                isEnabled: toggleBinding,
+                label: "Power Mode",
+                infoMessage: "Apply custom settings based on active app or website.",
+                infoURL: "https://tryvoiceink.com/docs/power-mode"
+            ) {
+                Toggle(isOn: $powerModePersistSettings) {
+                    HStack(spacing: 4) {
+                        Text("Persist Configured Preferences")
+                        InfoTip("When enabled, Power Mode preferences stay active after you stop recording instead of reverting to your original preferences. They will only change when a different Power Mode activates.")
+                    }
+                }
+            }
+        } header: {
+            Text("Power Mode")
+        }
+        .alert("Power Mode Still Active", isPresented: $showDisableAlert) {
+            Button("Got it", role: .cancel) { }
+        } message: {
+            Text("Disable or remove your Power Modes first.")
+        }
+    }
+
+    private var toggleBinding: Binding<Bool> {
+        Binding(
+            get: { powerModeUIFlag },
+            set: { newValue in
+                if newValue {
+                    powerModeUIFlag = true
+                } else if powerModeManager.configurations.allSatisfy({ !$0.isEnabled }) {
+                    powerModeUIFlag = false
+                } else {
+                    showDisableAlert = true
+                }
+            }
+        )
+    }
+}
+
+// MARK: - Experimental Section
+
+struct ExperimentalSection: View {
+    @ObservedObject private var playbackController = PlaybackController.shared
+    @ObservedObject private var mediaController = MediaController.shared
+    @AppStorage("isTargetAwarePasteExperimentalEnabled") private var isTargetAwarePasteExperimentalEnabled = false
+    @State private var isPauseMediaExpanded = false
+
+    var body: some View {
+        Section {
+            Toggle(isOn: $isTargetAwarePasteExperimentalEnabled) {
+                HStack(spacing: 4) {
+                    Text("Paste To Original Input Target (Experimental)")
+                    InfoTip("Tracks the app and focused input field when recording starts, then attempts to paste back into that original target.")
+                }
+            }
+
+            ExpandableSettingsRow(
+                isExpanded: $isPauseMediaExpanded,
+                isEnabled: $playbackController.isPauseMediaEnabled,
+                label: "Pause Media While Recording",
+                infoMessage: "Pauses playing media when recording starts and resumes when done."
+            ) {
+                Picker("Resume Delay", selection: $mediaController.audioResumptionDelay) {
+                    Text("0s").tag(0.0)
+                    Text("1s").tag(1.0)
+                    Text("2s").tag(2.0)
+                    Text("3s").tag(3.0)
+                    Text("4s").tag(4.0)
+                    Text("5s").tag(5.0)
+                }
+            }
+        } header: {
+            Text("Experimental")
+        }
+    }
+}
+
+// MARK: - Text Extension
 
 extension Text {
     func settingsDescription() -> some View {

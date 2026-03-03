@@ -215,6 +215,9 @@ enum BackupImporter {
         if let doubleTapForHandsFree = general.isDoubleTapForHandsFreeEnabled {
             recordingShortcutManager.isDoubleTapForHandsFreeEnabled = doubleTapForHandsFree
         }
+        if let targetAwarePasteEnabled = general.isTargetAwarePasteExperimentalEnabled {
+            UserDefaults.standard.set(targetAwarePasteEnabled, forKey: "isTargetAwarePasteExperimentalEnabled")
+        }
 
         print("Successfully imported general settings.")
     }

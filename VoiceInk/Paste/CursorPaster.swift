@@ -21,10 +21,10 @@ class CursorPaster {
     private static let pasteShortcutEventDelay: TimeInterval = 0.01
     private static let minimumClipboardRestoreDelay: TimeInterval = 0.25
 
-    static func pasteAtCursor(_ text: String) {
+    static func pasteAtCursor(_ text: String, targetPID: pid_t? = nil) {
         Task {
             let pasteTask = await MainActor.run {
-                startPasteAtCursor(text)
+                startPasteAtCursor(text, targetPID: targetPID)
             }
             _ = await pasteTask.value
         }
@@ -32,19 +32,19 @@ class CursorPaster {
 
     @MainActor
     @discardableResult
-    static func startPasteAtCursor(_ text: String) -> Task<PasteResult, Never> {
+    static func startPasteAtCursor(_ text: String, targetPID: pid_t? = nil) -> Task<PasteResult, Never> {
         Task { @MainActor in
-            await performPasteSession(text)
+            await performPasteSession(text, targetPID: targetPID)
         }
     }
 
     @MainActor
-    static func pasteAtCursorAndWaitUntilPosted(_ text: String) async -> PasteResult {
-        await startPasteAtCursor(text).value
+    static func pasteAtCursorAndWaitUntilPosted(_ text: String, targetPID: pid_t? = nil) async -> PasteResult {
+        await startPasteAtCursor(text, targetPID: targetPID).value
     }
 
     @MainActor
-    private static func performPasteSession(_ text: String) async -> PasteResult {
+    private static func performPasteSession(_ text: String, targetPID: pid_t?) async -> PasteResult {
         let pasteboard = NSPasteboard.general
         let shouldRestoreClipboard = UserDefaults.standard.bool(forKey: "restoreClipboardAfterPaste")
         let savedContents = shouldRestoreClipboard ? snapshotClipboard(from: pasteboard) : []
@@ -63,7 +63,7 @@ class CursorPaster {
 
         await wait(prePasteDelay)
 
-        let pasteResult = await postPasteCommand()
+        let pasteResult = await postPasteCommand(targetPID: targetPID)
         if shouldRestoreClipboard {
             scheduleClipboardRestore(
                 savedContents,
@@ -88,11 +88,11 @@ class CursorPaster {
     }
 
     @MainActor
-    private static func postPasteCommand() async -> PasteResult {
+    private static func postPasteCommand(targetPID: pid_t?) async -> PasteResult {
         if PasteMethod.current() == .appleScript {
-            return pasteUsingAppleScript() ? .commandPosted : .commandNotPosted
+            return pasteUsingAppleScript(targetPID: targetPID) ? .commandPosted : .commandNotPosted
         } else {
-            return await pasteFromClipboard()
+            return await pasteFromClipboard(targetPID: targetPID)
         }
     }
 
@@ -163,7 +163,11 @@ class CursorPaster {
     }
 
     @MainActor
-    private static func pasteUsingAppleScript() -> Bool {
+    private static func pasteUsingAppleScript(targetPID: pid_t?) -> Bool {
+        if let targetPID {
+            logger.notice("Pasting via AppleScript while target pid=\(targetPID, privacy: .public)")
+        }
+
         guard let script = layoutSwitchesToQWERTYOnCommand ? pasteScriptKeyCode : pasteScriptKeystroke else {
             logger.error("AppleScript paste script is unavailable")
             return false
@@ -181,7 +185,7 @@ class CursorPaster {
 
     // Posts Cmd+V via CGEvent without modifying the active input source.
     @MainActor
-    private static func pasteFromClipboard() async -> PasteResult {
+    private static func pasteFromClipboard(targetPID: pid_t?) async -> PasteResult {
         guard AXIsProcessTrusted() else {
             logger.error("Accessibility permission is required to paste with simulated key events")
             return .commandNotPosted
@@ -202,13 +206,13 @@ class CursorPaster {
         vDown.flags = .maskCommand
         vUp.flags = .maskCommand
 
-        cmdDown.post(tap: .cghidEventTap)
+        postKeyEvent(cmdDown, targetPID: targetPID)
         await wait(pasteShortcutEventDelay)
-        vDown.post(tap: .cghidEventTap)
+        postKeyEvent(vDown, targetPID: targetPID)
         await wait(pasteShortcutEventDelay)
-        vUp.post(tap: .cghidEventTap)
+        postKeyEvent(vUp, targetPID: targetPID)
         await wait(pasteShortcutEventDelay)
-        cmdUp.post(tap: .cghidEventTap)
+        postKeyEvent(cmdUp, targetPID: targetPID)
 
         return .commandPosted
     }
@@ -221,7 +225,7 @@ class CursorPaster {
 
     // MARK: - Auto Send Keys
 
-    static func performAutoSend(_ key: AutoSendKey) {
+    static func performAutoSend(_ key: AutoSendKey, targetPID: pid_t? = nil) {
         guard key.isEnabled else { return }
         guard AXIsProcessTrusted() else { return }
 
@@ -240,7 +244,17 @@ class CursorPaster {
             enterUp?.flags = .maskCommand
         }
 
-        enterDown?.post(tap: .cghidEventTap)
-        enterUp?.post(tap: .cghidEventTap)
+        postKeyEvent(enterDown, targetPID: targetPID)
+        postKeyEvent(enterUp, targetPID: targetPID)
+    }
+
+    private static func postKeyEvent(_ event: CGEvent?, targetPID: pid_t?) {
+        guard let event else { return }
+
+        if let targetPID {
+            event.postToPid(targetPID)
+        } else {
+            event.post(tap: .cghidEventTap)
+        }
     }
 }

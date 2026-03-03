@@ -12,6 +12,7 @@ final class TranscriptionDelivery {
         let responseConfig: EnhancementRuntimeConfiguration?
         let responseError: String?
         let isAssistantFollowUp: Bool
+        let pasteTarget: PasteTargetSnapshot?
     }
 
     struct Actions {
@@ -46,7 +47,7 @@ final class TranscriptionDelivery {
         }
 
         if let text = request.text {
-            await paste(text, output: request.output, actions: actions)
+            await paste(text, output: request.output, pasteTarget: request.pasteTarget, actions: actions)
         } else {
             await actions.dismiss()
         }
@@ -154,23 +155,62 @@ final class TranscriptionDelivery {
         String(format: "%.3f", duration)
     }
 
-    private func paste(_ text: String, output: OutputRuntimeConfiguration, actions: Actions) async {
+    private func paste(
+        _ text: String,
+        output: OutputRuntimeConfiguration,
+        pasteTarget: PasteTargetSnapshot?,
+        actions: Actions
+    ) async {
         let textToPaste = deliverableText(from: text)
         let appendSpace = UserDefaults.standard.bool(forKey: "AppendTrailingSpace")
         let pastedText = textToPaste + (appendSpace ? " " : "")
         SoundManager.shared.playStopSound()
         await actions.dismiss()
 
-        let pasteTask = CursorPaster.startPasteAtCursor(pastedText)
-
         let autoSendKey = output.outputMode == .paste ? output.autoSendKey : .none
         Task { @MainActor in
-            _ = await pasteTask.value
+            let targetPID = await executePaste(pastedText, pasteTarget: pasteTarget)
 
             if autoSendKey.isEnabled {
                 try? await Task.sleep(nanoseconds: 500_000_000)
-                CursorPaster.performAutoSend(autoSendKey)
+                CursorPaster.performAutoSend(autoSendKey, targetPID: targetPID)
             }
+        }
+    }
+
+    private func executePaste(_ text: String, pasteTarget: PasteTargetSnapshot?) async -> pid_t? {
+        guard let pasteTarget, pasteTarget.featureEnabledForSession else {
+            _ = await CursorPaster.startPasteAtCursor(text).value
+            return nil
+        }
+
+        let restoreResult = await PasteTargetService.restoreTargetIfPossible(from: pasteTarget)
+        switch restoreResult {
+        case .targetUnavailable:
+            NotificationManager.shared.showNotification(
+                title: String(localized: "Original input target unavailable. Pasted at current cursor."),
+                type: .warning
+            )
+            _ = await CursorPaster.startPasteAtCursor(text).value
+            return nil
+
+        case .restored(let targetPID):
+            let insertOutcome = AccessibilityTextInsertionService.insertText(
+                text,
+                appPID: targetPID,
+                preferredElement: pasteTarget.focusedElementAX
+            )
+
+            if insertOutcome.isSuccess {
+                logger.notice("Target-aware AX insertion succeeded for pid=\(targetPID, privacy: .public)")
+                return targetPID
+            }
+
+            logger.notice(
+                "Target-aware AX insertion failed (\(insertOutcome.debugSummary, privacy: .public)); falling back to clipboard paste"
+            )
+            _ = await CursorPaster.startPasteAtCursor(text, targetPID: targetPID).value
+            return targetPID
         }
     }
 

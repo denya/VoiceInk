@@ -100,6 +100,7 @@ struct GeneralBackup: Codable {
     let clipboardRestoreDelay: Double?
     let useAppleScriptPaste: Bool?
     let isDoubleTapForHandsFreeEnabled: Bool?
+    let isTargetAwarePasteExperimentalEnabled: Bool?
 }
 
 struct WordBackup: Codable {

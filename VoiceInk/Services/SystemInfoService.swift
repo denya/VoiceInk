@@ -59,6 +59,7 @@ class SystemInfoService {
             Restore Clipboard After Paste: \(UserDefaults.standard.bool(forKey: "restoreClipboardAfterPaste"))
             Clipboard Restore Delay: \(UserDefaults.standard.double(forKey: "clipboardRestoreDelay"))s
             Paste Method: \(PasteMethod.current().displayName)
+            Target-Aware Paste (Experimental): \(UserDefaults.standard.bool(forKey: "isTargetAwarePasteExperimentalEnabled"))
 
             DATA CLEANUP SETTINGS:
             Auto-Delete Transcriptions: \(UserDefaults.standard.bool(forKey: CleanupSettingsKeys.isTranscriptionCleanupEnabled))

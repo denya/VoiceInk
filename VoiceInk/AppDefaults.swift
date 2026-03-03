@@ -63,6 +63,9 @@ enum AppDefaults {
             "EnhancementTimeoutSeconds": 7,
             "EnhancementRetryOnTimeout": true,
 
+            // Experimental
+            "isTargetAwarePasteExperimentalEnabled": false,
+
             // Model
             "PrewarmModelOnWake": true,
 

@@ -105,6 +105,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
     private var activeRecordingContextStore: RecordingContextSnapshotStore?
     private var activeRecordingContextTasks: [Task<Void, Never>] = []
     private var voiceInkRefinePreparationTask: Task<Void, Never>?
+    private var currentPasteTargetSnapshot: PasteTargetSnapshot?
 
     let recorder = Recorder()
     var recordedFile: URL? = nil
@@ -205,12 +206,16 @@ class VoiceInkEngine: NSObject, ObservableObject {
                     try? modelContext.save()
                     NotificationCenter.default.post(name: .transcriptionCreated, object: transcription)
 
+                    let pasteTargetSnapshot = currentPasteTargetSnapshot
+                    currentPasteTargetSnapshot = nil
                     await runPipeline(
                         on: transcription,
                         audioURL: recordedFile,
-                        contextStore: activeRecordingContextStore
+                        contextStore: activeRecordingContextStore,
+                        pasteTarget: pasteTargetSnapshot
                     )
                 } else {
+                    currentPasteTargetSnapshot = nil
                     await finishActiveRecorderCancellation()
                 }
             } else {
@@ -218,6 +223,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
                 if !shouldCancelRecording {
                     logger.error("❌ No recorded file found after stopping recording")
                 }
+                currentPasteTargetSnapshot = nil
                 recordingState = .idle
                 await cleanupResources()
             }
@@ -234,6 +240,8 @@ class VoiceInkEngine: NSObject, ObservableObject {
             if !recordingUseCase.isAssistantFollowUp {
                 assistantSession.reset()
             }
+
+            currentPasteTargetSnapshot = PasteTargetService.captureCurrentTargetForSession()
 
             requestRecordPermission { [self] granted in
                 if granted {
@@ -275,6 +283,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
                                     }
                                     self.recordingState = .idle
                                     self.activeRecordingStartID = nil
+                                    self.currentPasteTargetSnapshot = nil
                                 }
                                 return
                             }
@@ -407,6 +416,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
                     }
                 } else {
                     logger.error("Recording permission denied")
+                    currentPasteTargetSnapshot = nil
                 }
             }
         }
@@ -513,7 +523,8 @@ class VoiceInkEngine: NSObject, ObservableObject {
     private func runPipeline(
         on transcription: Transcription,
         audioURL: URL,
-        contextStore: RecordingContextSnapshotStore?
+        contextStore: RecordingContextSnapshotStore?,
+        pasteTarget: PasteTargetSnapshot?
     ) async {
         guard
             let transcriptionConfiguration = currentSessionTranscriptionConfiguration
@@ -539,6 +550,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
                 ModeRuntimeResolver.transcriptionFormattingConfiguration()
             },
             session: session,
+            pasteTarget: pasteTarget,
             triggerWordModeSelection: { [weak self] text in
                 self?.selectTriggerWordModeIfNeeded(for: text)
             },
@@ -666,6 +678,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
         cancelCurrentSession()
         activeRecordingStartID = nil
         activePipelineTranscriptionID = nil
+        currentPasteTargetSnapshot = nil
         canceledPipelineTranscriptionIDs.removeAll()
         shouldCancelRecording = false
         partialTranscript = ""
@@ -693,6 +706,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
 
     private func finishActiveRecorderCancellation() async {
         activeRecordingStartID = nil
+        currentPasteTargetSnapshot = nil
         clearActiveRecordingContext()
         await recorder.stopRecording()
         await saveCanceledRecording()
@@ -847,6 +861,7 @@ class VoiceInkEngine: NSObject, ObservableObject {
         activeRecordingStartID = nil
         activeRecordingUseCase = .newSession
         await finishRecorderSession()
+        currentPasteTargetSnapshot = nil
         await whisperModelManager.cleanupResources()
         await serviceRegistry.cleanup()
         logger.notice("cleanupResources: completed")

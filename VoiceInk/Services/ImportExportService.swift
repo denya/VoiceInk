@@ -107,6 +107,7 @@ class ImportExportService {
     private let currentSettingsVersion: String
 
     private let keyIsTextFormattingEnabled = "IsTextFormattingEnabled"
+    private let keyTargetAwarePaste = "isTargetAwarePasteExperimentalEnabled"
 
     private init() {
         if let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
@@ -185,7 +186,8 @@ class ImportExportService {
             restoreClipboardAfterPaste: UserDefaults.standard.bool(forKey: "restoreClipboardAfterPaste"),
             clipboardRestoreDelay: UserDefaults.standard.double(forKey: "clipboardRestoreDelay"),
             useAppleScriptPaste: UserDefaults.standard.bool(forKey: "useAppleScriptPaste"),
-            isDoubleTapForHandsFreeEnabled: recordingShortcutManager.isDoubleTapForHandsFreeEnabled
+            isDoubleTapForHandsFreeEnabled: recordingShortcutManager.isDoubleTapForHandsFreeEnabled,
+            isTargetAwarePasteExperimentalEnabled: UserDefaults.standard.bool(forKey: keyTargetAwarePaste)
         )
 
         let exportedSettings = BackupFile(

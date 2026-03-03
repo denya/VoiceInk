@@ -44,6 +44,7 @@ class TranscriptionPipeline {
     ///   - audioURL: The recorded audio file.
     ///   - transcriptionConfiguration: Mode-resolved transcription engine settings for this phase.
     ///   - session: An active streaming session if one was prepared, otherwise nil.
+    ///   - pasteTarget: Snapshot of the original input target captured when recording started.
     ///   - onStateChange: Called when the pipeline moves to a new recording state (e.g. `.enhancing`).
     ///   - shouldCancel: Returns true if the user requested cancellation.
     ///   - onCancel: Called when cancellation is detected to cancel active session state.
@@ -54,6 +55,7 @@ class TranscriptionPipeline {
         transcriptionConfiguration: TranscriptionRuntimeConfiguration,
         formattingConfiguration resolveFormattingConfiguration: @escaping () -> TranscriptionFormattingConfiguration,
         session: TranscriptionSession?,
+        pasteTarget: PasteTargetSnapshot?,
         triggerWordModeSelection: @escaping (String) -> String? = { _ in nil },
         enhancementConfiguration: @escaping () -> EnhancementRuntimeConfiguration?,
         recordingContextSnapshot: @escaping () async -> RecordingContextSnapshot? = { nil },
@@ -278,7 +280,8 @@ class TranscriptionPipeline {
                 output: outputForDelivery ?? outputConfiguration(),
                 responseConfig: responseConfig,
                 responseError: responseError,
-                isAssistantFollowUp: assistant.isFollowUp
+                isAssistantFollowUp: assistant.isFollowUp,
+                pasteTarget: pasteTarget
             ),
             actions: TranscriptionDelivery.Actions(
                 setState: onStateChange,
