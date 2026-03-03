@@ -44,8 +44,13 @@ struct ModifierHotkeyPressStateMachine {
         lastCleanTapReleaseTime = nil
     }
 
-    mutating func endPress(doubleTapEnabled: Bool, eventTime: TimeInterval) -> ModifierHotkeyReleaseAction {
+    mutating func endPress(
+        doubleTapEnabled: Bool,
+        eventTime: TimeInterval,
+        shortPressThreshold: TimeInterval
+    ) -> ModifierHotkeyReleaseAction {
         guard isPressed else { return .none }
+        let pressDuration = pressStartTime.map { eventTime - $0 } ?? 0
 
         defer {
             isPressed = false
@@ -65,9 +70,16 @@ struct ModifierHotkeyPressStateMachine {
             return .none
         }
 
+        let isShortPress = pressDuration < shortPressThreshold
+
         if !doubleTapEnabled {
             lastCleanTapReleaseTime = nil
-            return .toggle
+            return isShortPress ? .toggle : .none
+        }
+
+        guard isShortPress else {
+            lastCleanTapReleaseTime = nil
+            return .none
         }
 
         if let lastRelease = lastCleanTapReleaseTime,
@@ -673,7 +685,8 @@ final class RecordingShortcutModeHandler {
 
         let releaseAction = modifierPressState.endPress(
             doubleTapEnabled: mode == .hybrid && isDoubleTapForHandsFreeEnabled(),
-            eventTime: eventTime
+            eventTime: eventTime,
+            shortPressThreshold: hybridPressThreshold
         )
 
         switch releaseAction {
