@@ -188,7 +188,7 @@ enum AccessibilityTextInsertionService {
             return nil
         }
 
-        return unsafeBitCast(value, to: AXUIElement.self)
+        return (value as! AXUIElement)
     }
 
     private static func copySelectedTextRange(_ element: AXUIElement) -> CFRange? {
@@ -202,7 +202,7 @@ enum AccessibilityTextInsertionService {
             return nil
         }
 
-        let axValue = unsafeBitCast(value, to: AXValue.self)
+        let axValue = (value as! AXValue)
         guard AXValueGetType(axValue) == .cfRange else {
             return nil
         }

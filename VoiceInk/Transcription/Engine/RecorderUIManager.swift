@@ -66,6 +66,10 @@ class RecorderUIManager: ObservableObject, RecorderPanelPresenting {
 
     init() {}
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     /// Call after VoiceInkEngine is created to break the circular init dependency.
     func configure(engine: VoiceInkEngine, recorder: Recorder) {
         self.engine = engine

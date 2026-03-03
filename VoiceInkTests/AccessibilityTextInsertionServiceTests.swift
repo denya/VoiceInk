@@ -1,6 +1,8 @@
+import CoreFoundation
 import Testing
 @testable import VoiceInk
 
+@MainActor
 struct AccessibilityTextInsertionServiceTests {
     @Test
     func appendsWhenSelectionIsMissing() {

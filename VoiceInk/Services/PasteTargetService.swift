@@ -3,7 +3,7 @@ import AppKit
 import ApplicationServices
 import os
 
-struct PasteTargetSnapshot {
+struct PasteTargetSnapshot: @unchecked Sendable {
     let appPID: pid_t?
     let bundleID: String?
     let capturedAt: Date
@@ -87,7 +87,7 @@ enum PasteTargetService {
         }
 
         let targetPID = application.processIdentifier
-        let didActivate = application.activate(options: [.activateAllWindows, .activateIgnoringOtherApps])
+        let didActivate = application.activate(options: [.activateAllWindows])
         guard didActivate else {
             logger.notice("Failed to activate captured app for paste restoration: pid=\(targetPID, privacy: .public)")
             return .targetUnavailable
@@ -100,12 +100,25 @@ enum PasteTargetService {
             let appElement = AXUIElementCreateApplication(targetPID)
 
             if let focusedWindowAX = snapshot.focusedWindowAX {
-                _ = AXUIElementSetAttributeValue(appElement, kAXFocusedWindowAttribute as CFString, focusedWindowAX)
-                _ = AXUIElementPerformAction(focusedWindowAX, kAXRaiseAction as CFString)
+                // Probe whether the captured window element is still valid
+                var probeValue: CFTypeRef?
+                let probeError = AXUIElementCopyAttributeValue(focusedWindowAX, kAXRoleAttribute as CFString, &probeValue)
+                if probeError == .success {
+                    _ = AXUIElementSetAttributeValue(appElement, kAXFocusedWindowAttribute as CFString, focusedWindowAX)
+                    _ = AXUIElementPerformAction(focusedWindowAX, kAXRaiseAction as CFString)
+                } else {
+                    logger.notice("Captured window element is stale, skipping window restoration")
+                }
             }
 
             if let focusedElementAX = snapshot.focusedElementAX {
-                _ = AXUIElementSetAttributeValue(appElement, kAXFocusedUIElementAttribute as CFString, focusedElementAX)
+                var probeValue: CFTypeRef?
+                let probeError = AXUIElementCopyAttributeValue(focusedElementAX, kAXRoleAttribute as CFString, &probeValue)
+                if probeError == .success {
+                    _ = AXUIElementSetAttributeValue(appElement, kAXFocusedUIElementAttribute as CFString, focusedElementAX)
+                } else {
+                    logger.notice("Captured element is stale, skipping element restoration")
+                }
             }
 
             // Let focus changes settle before insertion/paste fallback.
@@ -177,6 +190,6 @@ enum PasteTargetService {
             return nil
         }
 
-        return unsafeBitCast(value, to: AXUIElement.self)
+        return (value as! AXUIElement)
     }
 }

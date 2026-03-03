@@ -69,7 +69,8 @@ class CursorPaster {
                 savedContents,
                 expectedText: text,
                 sessionID: sessionID,
-                on: pasteboard
+                on: pasteboard,
+                targetPID: targetPID
             )
         }
 
@@ -100,12 +101,14 @@ class CursorPaster {
         _ savedContents: ClipboardSnapshot,
         expectedText: String,
         sessionID: String,
-        on pasteboard: NSPasteboard
+        on pasteboard: NSPasteboard,
+        targetPID: pid_t?
     ) {
+        let targetAwarePasteOverhead: Double = targetPID != nil ? 0.2 : 0.0
         let delay = max(
             UserDefaults.standard.double(forKey: "clipboardRestoreDelay"),
             minimumClipboardRestoreDelay
-        )
+        ) + targetAwarePasteOverhead
 
         Task { @MainActor in
             await wait(delay)
@@ -165,7 +168,7 @@ class CursorPaster {
     @MainActor
     private static func pasteUsingAppleScript(targetPID: pid_t?) -> Bool {
         if let targetPID {
-            logger.notice("Pasting via AppleScript while target pid=\(targetPID, privacy: .public)")
+            logger.warning("AppleScript paste does not support target-aware delivery; pid=\(targetPID, privacy: .public) will be ignored, pasting globally")
         }
 
         guard let script = layoutSwitchesToQWERTYOnCommand ? pasteScriptKeyCode : pasteScriptKeystroke else {

@@ -292,14 +292,16 @@ class RecordingShortcutManager: ObservableObject {
             guard let self = self, event.buttonNumber == 2 else { return }
 
             self.middleClickTask?.cancel()
-            self.middleClickTask = Task {
+            self.middleClickTask = Task { [weak self] in
+                guard let self else { return }
                 do {
                     let delay = UInt64(self.middleClickActivationDelay) * 1_000_000  // ms to ns
                     try await Task.sleep(nanoseconds: delay)
 
                     guard self.isMiddleClickToggleEnabled, !Task.isCancelled else { return }
 
-                    Task { @MainActor in
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
                         guard self.canHandleShortcutAction else { return }
                         await self.recorderUIManager.toggleRecorderPanel()
                     }

@@ -165,6 +165,10 @@ class VoiceInkEngine: NSObject, ObservableObject {
         createRecordingsDirectoryIfNeeded()
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     private func createRecordingsDirectoryIfNeeded() {
         do {
             try FileManager.default.createDirectory(
@@ -243,13 +247,14 @@ class VoiceInkEngine: NSObject, ObservableObject {
 
             currentPasteTargetSnapshot = PasteTargetService.captureCurrentTargetForSession()
 
-            requestRecordPermission { [self] granted in
+            requestRecordPermission { [weak self] granted in
+                guard let self else { return }
                 if granted {
-                    Task { @MainActor [self] in
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
                         guard await self.passesRecordingPreflight() else {
                             return
                         }
-
                         let startID = UUID()
                         self.activeRecordingStartID = startID
                         let activeModeTask = ActiveWindowService.shared.beginApplyingConfiguration(modeId: modeId) {
@@ -393,7 +398,6 @@ class VoiceInkEngine: NSObject, ObservableObject {
                                     try? await self.serviceRegistry.fluidAudioTranscriptionService.loadModel(
                                         for: fluidAudioModel)
                                 }
-
                             }
 
                         } catch {
@@ -879,7 +883,8 @@ class VoiceInkEngine: NSObject, ObservableObject {
     }
 
     @objc func handlePromptChange() {
-        Task {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
             let currentPrompt =
                 UserDefaults.standard.string(forKey: "TranscriptionPrompt")
                 ?? whisperModelManager.whisperPrompt.transcriptionPrompt
