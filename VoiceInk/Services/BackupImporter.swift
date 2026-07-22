@@ -212,9 +212,6 @@ enum BackupImporter {
         if let appleScriptPaste = general.useAppleScriptPaste {
             UserDefaults.standard.set(appleScriptPaste, forKey: "useAppleScriptPaste")
         }
-        if let doubleTapForHandsFree = general.isDoubleTapForHandsFreeEnabled {
-            recordingShortcutManager.isDoubleTapForHandsFreeEnabled = doubleTapForHandsFree
-        }
         if let targetAwarePasteEnabled = general.isTargetAwarePasteExperimentalEnabled {
             UserDefaults.standard.set(targetAwarePasteEnabled, forKey: "isTargetAwarePasteExperimentalEnabled")
         }

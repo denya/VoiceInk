@@ -18,6 +18,7 @@ struct SettingsView: View {
     @AppStorage("restoreClipboardAfterPaste") private var restoreClipboardAfterPaste = true
     @AppStorage("clipboardRestoreDelay") private var clipboardRestoreDelay = 2.0
     @AppStorage(PasteMethod.userDefaultsKey) private var pasteMethodRawValue = PasteMethod.standard.rawValue
+    @AppStorage("isTargetAwarePasteExperimentalEnabled") private var isTargetAwarePasteExperimentalEnabled = false
     @AppStorage(AppAppearancePreference.userDefaultsKey) private var appAppearancePreference = AppAppearancePreference
         .system
     @AppStorage(AppLanguagePreference.userDefaultsKey) private var appLanguagePreference = AppLanguagePreference
@@ -73,13 +74,6 @@ struct SettingsView: View {
                     }
                 }
 
-                Toggle(isOn: $recordingShortcutManager.isDoubleTapForHandsFreeEnabled) {
-                    HStack(spacing: 4) {
-                        Text("Require Double-Tap for Hands-Free")
-                        InfoTip("Applies to modifier hotkeys only. OFF: short tap and release to toggle (and ignore Cmd/Ctrl shortcut chords). ON: hold for push-to-talk or double-tap for hands-free.")
-                    }
-                }
-                .disabled(!recordingShortcutManager.hasModifierRecordingShortcutConfigured)
             } header: {
                 Text("Shortcuts")
             } footer: {
@@ -197,6 +191,15 @@ struct SettingsView: View {
                         return
                     }
                     PasteMethod.setCurrent(method)
+                }
+
+                Toggle(isOn: $isTargetAwarePasteExperimentalEnabled) {
+                    HStack(spacing: 4) {
+                        Text("Paste to Original Input Target")
+                        InfoTip(
+                            "Off uses the selected paste method at the current cursor, matching upstream VoiceInk. On restores the app and input field that were focused when recording started."
+                        )
+                    }
                 }
             }
 
@@ -490,18 +493,10 @@ struct PowerModeSection: View {
 struct ExperimentalSection: View {
     @ObservedObject private var playbackController = PlaybackController.shared
     @ObservedObject private var mediaController = MediaController.shared
-    @AppStorage("isTargetAwarePasteExperimentalEnabled") private var isTargetAwarePasteExperimentalEnabled = false
     @State private var isPauseMediaExpanded = false
 
     var body: some View {
         Section {
-            Toggle(isOn: $isTargetAwarePasteExperimentalEnabled) {
-                HStack(spacing: 4) {
-                    Text("Paste To Original Input Target (Experimental)")
-                    InfoTip("Tracks the app and focused input field when recording starts, then attempts to paste back into that original target.")
-                }
-            }
-
             ExpandableSettingsRow(
                 isExpanded: $isPauseMediaExpanded,
                 isEnabled: $playbackController.isPauseMediaEnabled,

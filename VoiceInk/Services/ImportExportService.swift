@@ -186,7 +186,6 @@ class ImportExportService {
             restoreClipboardAfterPaste: UserDefaults.standard.bool(forKey: "restoreClipboardAfterPaste"),
             clipboardRestoreDelay: UserDefaults.standard.double(forKey: "clipboardRestoreDelay"),
             useAppleScriptPaste: UserDefaults.standard.bool(forKey: "useAppleScriptPaste"),
-            isDoubleTapForHandsFreeEnabled: recordingShortcutManager.isDoubleTapForHandsFreeEnabled,
             isTargetAwarePasteExperimentalEnabled: UserDefaults.standard.bool(forKey: keyTargetAwarePaste)
         )
 

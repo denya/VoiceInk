@@ -99,7 +99,6 @@ struct GeneralBackup: Codable {
     let restoreClipboardAfterPaste: Bool?
     let clipboardRestoreDelay: Double?
     let useAppleScriptPaste: Bool?
-    let isDoubleTapForHandsFreeEnabled: Bool?
     let isTargetAwarePasteExperimentalEnabled: Bool?
 }
 

@@ -3,12 +3,11 @@ import Testing
 
 struct ModifierHotkeyPressStateMachineTests {
     @Test
-    func offModeCleanPressReleaseToggles() {
+    func cleanShortPressReleaseToggles() {
         var machine = ModifierHotkeyPressStateMachine()
 
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
+        machine.beginPress(eventTime: 1.0)
         let action = machine.endPress(
-            doubleTapEnabled: false,
             eventTime: 1.1,
             shortPressThreshold: 0.5
         )
@@ -17,13 +16,12 @@ struct ModifierHotkeyPressStateMachineTests {
     }
 
     @Test
-    func offModeChordWithRegularKeyDoesNotToggle() {
+    func chordWithAnotherKeyDoesNotToggle() {
         var machine = ModifierHotkeyPressStateMachine()
 
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
+        machine.beginPress(eventTime: 1.0)
         machine.markChord()
         let action = machine.endPress(
-            doubleTapEnabled: false,
             eventTime: 1.1,
             shortPressThreshold: 0.5
         )
@@ -32,100 +30,24 @@ struct ModifierHotkeyPressStateMachineTests {
     }
 
     @Test
-    func offModeChordWithSecondModifierDoesNotToggle() {
+    func longPressDoesNotToggle() {
         var machine = ModifierHotkeyPressStateMachine()
 
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        machine.markChord()
+        machine.beginPress(eventTime: 1.0)
         let action = machine.endPress(
-            doubleTapEnabled: false,
-            eventTime: 1.2,
-            shortPressThreshold: 0.5
-        )
-
-        #expect(action == .none)
-    }
-
-    @Test
-    func onModeSingleQuickTapDoesNothing() {
-        var machine = ModifierHotkeyPressStateMachine()
-
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        let action = machine.endPress(
-            doubleTapEnabled: true,
-            eventTime: 1.1,
-            shortPressThreshold: 0.5
-        )
-
-        #expect(action == .none)
-    }
-
-    @Test
-    func onModeDoubleTapWithinWindowToggles() {
-        var machine = ModifierHotkeyPressStateMachine()
-
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        _ = machine.endPress(
-            doubleTapEnabled: true,
-            eventTime: 1.1,
-            shortPressThreshold: 0.5
-        )
-        machine.beginPress(keyCode: 0x36, eventTime: 1.3)
-        let action = machine.endPress(
-            doubleTapEnabled: true,
-            eventTime: 1.35,
-            shortPressThreshold: 0.5
-        )
-
-        #expect(action == .toggle)
-    }
-
-    @Test
-    func onModeDoubleTapOutsideWindowDoesNotToggle() {
-        var machine = ModifierHotkeyPressStateMachine()
-
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        _ = machine.endPress(
-            doubleTapEnabled: true,
-            eventTime: 1.1,
-            shortPressThreshold: 0.5
-        )
-        machine.beginPress(keyCode: 0x36, eventTime: 1.5)
-        let action = machine.endPress(
-            doubleTapEnabled: true,
-            eventTime: 1.55,
-            shortPressThreshold: 0.5
-        )
-
-        #expect(action == .none)
-    }
-
-    @Test
-    func onModeHoldStartsAndReleaseStopsPushToTalk() {
-        var machine = ModifierHotkeyPressStateMachine()
-
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        #expect(machine.canStartPushToTalk(doubleTapEnabled: true))
-        machine.markPushToTalkStarted()
-        let action = machine.endPress(
-            doubleTapEnabled: true,
             eventTime: 1.7,
             shortPressThreshold: 0.5
         )
 
-        #expect(action == .stopPushToTalk)
+        #expect(action == .none)
     }
 
     @Test
-    func onModeChordBeforeHoldDoesNotStartOrToggle() {
+    func releaseWithoutPressDoesNothing() {
         var machine = ModifierHotkeyPressStateMachine()
 
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        machine.markChord()
-        #expect(!machine.canStartPushToTalk(doubleTapEnabled: true))
         let action = machine.endPress(
-            doubleTapEnabled: true,
-            eventTime: 1.6,
+            eventTime: 1.1,
             shortPressThreshold: 0.5
         )
 
@@ -136,37 +58,18 @@ struct ModifierHotkeyPressStateMachineTests {
     func resetClearsAllSessionState() {
         var machine = ModifierHotkeyPressStateMachine()
 
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
+        machine.beginPress(eventTime: 1.0)
         machine.markChord()
-        machine.markPushToTalkStarted()
         machine.reset()
 
         #expect(!machine.isPressed)
-        #expect(machine.activeModifierKeyCode == nil)
         #expect(machine.pressStartTime == nil)
         #expect(!machine.didChordWithAnotherKey)
-        #expect(!machine.didStartPushToTalk)
-        #expect(machine.lastCleanTapReleaseTime == nil)
         #expect(
             machine.endPress(
-                doubleTapEnabled: true,
                 eventTime: 2.0,
                 shortPressThreshold: 0.5
             ) == .none
         )
-    }
-
-    @Test
-    func offModeLongPressDoesNotToggle() {
-        var machine = ModifierHotkeyPressStateMachine()
-
-        machine.beginPress(keyCode: 0x36, eventTime: 1.0)
-        let action = machine.endPress(
-            doubleTapEnabled: false,
-            eventTime: 1.7,
-            shortPressThreshold: 0.5
-        )
-
-        #expect(action == .none)
     }
 }
