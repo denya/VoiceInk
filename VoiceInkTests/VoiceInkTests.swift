@@ -21,23 +21,29 @@ struct VoiceInkTests {
             </TRANSCRIPT>
             """
 
-        #expect(AIEnhancementOutputFilter.filter(output) == "Cleaned transcript.")
+        #expect(
+            AIEnhancementOutputFilter.filter(output, preservingMarkupFrom: "Cleaned transcript.")
+                == "Cleaned transcript."
+        )
     }
 
-    @Test func enhancementOutputFilterUnwrapsUserMessageEnvelopeCaseInsensitively() {
+    @Test func enhancementOutputFilterUnwrapsGenericOuterEnvelope() {
         let output = """
-            <user_message>
+            <MODEL_OUTPUT format="plain-text">
             Cleaned transcript.
-            </USER_MESSAGE>
+            </MODEL_OUTPUT>
             """
 
-        #expect(AIEnhancementOutputFilter.filter(output) == "Cleaned transcript.")
+        #expect(
+            AIEnhancementOutputFilter.filter(output, preservingMarkupFrom: "Cleaned transcript.")
+                == "Cleaned transcript."
+        )
     }
 
     @Test func enhancementOutputFilterPreservesTagsInsideSpokenContent() {
         let output = "I said <TRANSCRIPT>hello</TRANSCRIPT> during the recording."
 
-        #expect(AIEnhancementOutputFilter.filter(output) == output)
+        #expect(AIEnhancementOutputFilter.filter(output, preservingMarkupFrom: output) == output)
     }
 
     @Test func enhancementOutputFilterRemovesReasoningBeforeUnwrappingEnvelope() {
@@ -48,7 +54,16 @@ struct VoiceInkTests {
             </TRANSCRIPT>
             """
 
-        #expect(AIEnhancementOutputFilter.filter(output) == "Cleaned transcript.")
+        #expect(
+            AIEnhancementOutputFilter.filter(output, preservingMarkupFrom: "Cleaned transcript.")
+                == "Cleaned transcript."
+        )
+    }
+
+    @Test func enhancementOutputFilterPreservesOuterMarkupWithoutTranscriptContext() {
+        let output = "<response>Intentional assistant XML.</response>"
+
+        #expect(AIEnhancementOutputFilter.filter(output) == output)
     }
 
 }

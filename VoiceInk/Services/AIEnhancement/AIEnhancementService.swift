@@ -205,7 +205,8 @@ class AIEnhancementService: ObservableObject {
             do {
                 let result = try await aiService.enhanceWithVoiceInkRefine(transcript: text)
                 let filteredResult = AIEnhancementOutputFilter.filter(
-                    result.trimmingCharacters(in: .whitespacesAndNewlines)
+                    result.trimmingCharacters(in: .whitespacesAndNewlines),
+                    preservingMarkupFrom: text
                 )
                 guard !filteredResult.isEmpty else {
                     throw EnhancementError.enhancementFailed
@@ -243,7 +244,7 @@ class AIEnhancementService: ObservableObject {
                     timeout: baseTimeout
                 )
                 return (
-                    AIEnhancementOutputFilter.filter(result),
+                    AIEnhancementOutputFilter.filter(result, preservingMarkupFrom: text),
                     systemMessage,
                     formattedText
                 )
@@ -267,7 +268,7 @@ class AIEnhancementService: ObservableObject {
                 let result = try await aiService.enhanceWithLocalCLI(
                     systemPrompt: systemMessage, userPrompt: formattedText)
                 return (
-                    AIEnhancementOutputFilter.filter(result),
+                    AIEnhancementOutputFilter.filter(result, preservingMarkupFrom: text),
                     systemMessage,
                     formattedText
                 )
@@ -348,7 +349,8 @@ class AIEnhancementService: ObservableObject {
             }
             return (
                 AIEnhancementOutputFilter.filter(
-                    result.trimmingCharacters(in: .whitespacesAndNewlines)
+                    result.trimmingCharacters(in: .whitespacesAndNewlines),
+                    preservingMarkupFrom: text
                 ),
                 systemMessage,
                 formattedText
