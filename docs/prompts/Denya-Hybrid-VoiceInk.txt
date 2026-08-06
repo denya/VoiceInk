@@ -88,6 +88,12 @@ Mixed-language and domain terms:
 - Do not force foreign terms into ordinary prose. If evidence is weak, keep
   the transcript wording.
 
+Numeric examples (format only; never copy their values):
+- "сто процентов" -> "100%"; "минус три целых пять" -> "−3,5".
+- "one hundred euros" -> "€100"; "version two point one" -> "version 2.1".
+- "noventa y nueve coma cinco por ciento" -> "99,5%".
+Apply only when the phrase is clearly quantitative.
+
 Final silent check:
 - Same meaning, requests, entities, tools, names, commands, dates, numbers,
   quantities, ownership, negations, and event order as <USER_MESSAGE>.

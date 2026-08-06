@@ -1,0 +1,449 @@
+[
+  {
+    "id": "train_ru_percent",
+    "split": "train",
+    "language": "ru",
+    "category": "percentage",
+    "input": "Вероятность сто процентов, без оговорок.",
+    "expected": "Вероятность — 100%, без оговорок.",
+    "required": ["100\\s?%", "без оговорок"],
+    "forbidden": ["сто процентов"],
+    "negations": ["без"]
+  },
+  {
+    "id": "train_ru_money",
+    "split": "train",
+    "language": "ru",
+    "category": "money",
+    "input": "Бюджет две тысячи триста евро.",
+    "expected": "Бюджет — 2 300 €.",
+    "required": ["(?:2[ .]?300\\s?(?:€|евро)|€\\s?2[ .]?300)"],
+    "forbidden": ["две тысячи триста"]
+  },
+  {
+    "id": "train_ru_decimal_sign",
+    "split": "train",
+    "language": "ru",
+    "category": "decimal",
+    "input": "Температура минус три целых пять десятых градуса.",
+    "expected": "Температура — −3,5 градуса.",
+    "required": ["[-−]3[,.]5", "градус"],
+    "forbidden": ["минус три целых"]
+  },
+  {
+    "id": "train_ru_date",
+    "split": "train",
+    "language": "ru",
+    "category": "date",
+    "input": "Встретимся пятого августа в тринадцать тридцать.",
+    "expected": "Встретимся 5 августа в 13:30.",
+    "required": ["5(?:-го)? августа", "13[:.]30"],
+    "forbidden": ["пятого августа", "тринадцать тридцать"]
+  },
+  {
+    "id": "train_ru_range",
+    "split": "train",
+    "language": "ru",
+    "category": "range",
+    "input": "Срок от пяти до семи рабочих дней.",
+    "expected": "Срок — 5–7 рабочих дней.",
+    "required": ["5\\s*(?:[-–—]|до)\\s*7", "рабочих дней"],
+    "forbidden": ["от пяти до семи"]
+  },
+  {
+    "id": "train_ru_version",
+    "split": "train",
+    "language": "ru",
+    "category": "version",
+    "input": "Поставь версию два точка ноль точка один, но не два точка один.",
+    "expected": "Поставь версию 2.0.1, но не 2.1.",
+    "required": ["2\\.0\\.1", "не\\s+2\\.1"],
+    "forbidden": ["два точка"],
+    "negations": ["не"]
+  },
+  {
+    "id": "train_ru_ordinal_list",
+    "split": "train",
+    "language": "ru",
+    "category": "ordinal_list",
+    "input": "Нужно сделать три вещи: первое, проверить договор; второе, позвонить Анне; третье, не отправлять оригинал.",
+    "expected": "Нужно сделать 3 вещи:\n1. Проверить договор.\n2. Позвонить Анне.\n3. Не отправлять оригинал.",
+    "required": ["(?m)^\\s*1[.)]\\s+Проверить договор", "(?m)^\\s*2[.)]\\s+Позвонить Анне", "(?m)^\\s*3[.)]\\s+Не отправлять оригинал"],
+    "negations": ["не"],
+    "entities": ["Анне"],
+    "list_items": 3
+  },
+  {
+    "id": "train_ru_literal_ordinal",
+    "split": "train",
+    "language": "ru",
+    "category": "literal_prose",
+    "input": "Первый снег был тихим, а второй уже напоминал метель.",
+    "expected": "Первый снег был тихим, а второй уже напоминал метель.",
+    "required": ["Первый снег", "второй уже напоминал метель"],
+    "forbidden": ["(?m)^\\s*[12][.)]"],
+    "preserve_exact": true
+  },
+  {
+    "id": "train_en_percent",
+    "split": "train",
+    "language": "en",
+    "category": "percentage",
+    "input": "The result is one hundred percent certain, not ninety nine percent.",
+    "expected": "The result is 100% certain, not 99%.",
+    "required": ["100\\s?%", "not\\s+99\\s?%"],
+    "forbidden": ["one hundred percent", "ninety nine percent"],
+    "negations": ["not"]
+  },
+  {
+    "id": "train_es_money",
+    "split": "train",
+    "language": "es",
+    "category": "money",
+    "input": "El total es dos mil euros, no dos mil quinientos.",
+    "expected": "El total es 2.000 €, no 2.500 €.",
+    "required": ["(?:2[ .]?000\\s?(?:€|euros?)|€\\s?2[ .]?000)", "no\\s+(?:2[ .]?500\\s?(?:€|euros?)|€\\s?2[ .]?500)"],
+    "forbidden": ["dos mil euros", "dos mil quinientos"],
+    "negations": ["no"]
+  },
+  {
+    "id": "train_identifier_noop",
+    "split": "train",
+    "language": "ru",
+    "category": "identifier",
+    "input": "Номер документа XZ-2048-B и счет ES91 2100 0418 4502 0005 1332.",
+    "expected": "Номер документа XZ-2048-B и счет ES91 2100 0418 4502 0005 1332.",
+    "entities": ["XZ-2048-B", "ES91 2100 0418 4502 0005 1332"],
+    "preserve_exact": true
+  },
+  {
+    "id": "train_phone_noop",
+    "split": "train",
+    "language": "ru",
+    "category": "phone",
+    "input": "Телефон +34 612 345 678, не +34 612 345 679.",
+    "expected": "Телефон +34 612 345 678, не +34 612 345 679.",
+    "entities": ["+34 612 345 678", "+34 612 345 679"],
+    "negations": ["не"],
+    "preserve_exact": true
+  },
+
+  {
+    "id": "dev_ru_percent_quantity",
+    "split": "dev",
+    "language": "ru",
+    "category": "percentage",
+    "input": "Мы выполнили сто процентов плана и не превысили бюджет.",
+    "expected": "Мы выполнили 100% плана и не превысили бюджет.",
+    "required": ["100\\s?%", "не превысили бюджет"],
+    "forbidden": ["сто процентов"],
+    "negations": ["не"]
+  },
+  {
+    "id": "dev_ru_signed_decimal",
+    "split": "dev",
+    "language": "ru",
+    "category": "decimal",
+    "input": "Баланс минус двенадцать целых семь десятых евро.",
+    "expected": "Баланс — −12,7 €.",
+    "required": ["[-−]12[,.]7", "€"],
+    "forbidden": ["минус двенадцать", "семь десятых"]
+  },
+  {
+    "id": "dev_ru_money",
+    "split": "dev",
+    "language": "ru",
+    "category": "money",
+    "input": "Оплата восемьсот пятьдесят евро, включая налог.",
+    "expected": "Оплата — 850 €, включая налог.",
+    "required": ["(?:850\\s?(?:€|евро)|€\\s?850)", "включая налог"],
+    "forbidden": ["восемьсот пятьдесят"]
+  },
+  {
+    "id": "dev_ru_date_time",
+    "split": "dev",
+    "language": "ru",
+    "category": "date",
+    "input": "Дедлайн двадцать первого сентября две тысячи двадцать шестого года в девять ноль пять.",
+    "expected": "Дедлайн — 21 сентября 2026 года в 09:05.",
+    "required": ["21(?:-го)? сентября", "2026", "0?9[:.]05"],
+    "forbidden": ["двадцать первого сентября", "две тысячи двадцать шестого", "девять ноль пять"]
+  },
+  {
+    "id": "dev_ru_range",
+    "split": "dev",
+    "language": "ru",
+    "category": "range",
+    "input": "Ожидаем от двадцати пяти до тридцати заявок.",
+    "expected": "Ожидаем 25–30 заявок.",
+    "required": ["25\\s*(?:[-–—]|до)\\s*30", "заявок"],
+    "forbidden": ["двадцати пяти", "тридцати"]
+  },
+  {
+    "id": "dev_ru_version",
+    "split": "dev",
+    "language": "ru",
+    "category": "version",
+    "input": "Ошибка появилась в версии три точка два точка семь, а в три точка два точка восемь ее нет.",
+    "expected": "Ошибка появилась в версии 3.2.7, а в 3.2.8 ее нет.",
+    "required": ["3\\.2\\.7", "3\\.2\\.8", "нет"],
+    "forbidden": ["три точка"],
+    "negations": ["нет"]
+  },
+  {
+    "id": "dev_ru_phone_noop",
+    "split": "dev",
+    "language": "ru",
+    "category": "phone",
+    "input": "Мой номер +7 916 123-45-67.",
+    "expected": "Мой номер +7 916 123-45-67.",
+    "entities": ["+7 916 123-45-67"],
+    "preserve_exact": true
+  },
+  {
+    "id": "dev_ru_document_noop",
+    "split": "dev",
+    "language": "ru",
+    "category": "identifier",
+    "input": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+    "expected": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+    "entities": ["NIE", "Y1234567X", "UGE-2026-00419"],
+    "preserve_exact": true
+  },
+  {
+    "id": "dev_ru_ordinal_list",
+    "split": "dev",
+    "language": "ru",
+    "category": "ordinal_list",
+    "input": "Первый пункт — проверить паспорт, второй — сверить дату, третий — не менять номер дела.",
+    "expected": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+    "required": ["(?m)^\\s*1[.)]\\s+Проверить паспорт", "(?m)^\\s*2[.)]\\s+Сверить дату", "(?m)^\\s*3[.)]\\s+Не менять номер дела"],
+    "negations": ["не"],
+    "list_items": 3
+  },
+  {
+    "id": "dev_ru_literal_ordinal",
+    "split": "dev",
+    "language": "ru",
+    "category": "literal_prose",
+    "input": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+    "expected": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+    "required": ["На третий день", "первый луч солнца"],
+    "forbidden": ["(?m)^\\s*[13][.)]"],
+    "preserve_exact": true
+  },
+  {
+    "id": "dev_ru_digits_noop",
+    "split": "dev",
+    "language": "ru",
+    "category": "noop",
+    "input": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+    "expected": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+    "entities": ["12,5%", "437,20 €", "07.08.2026"],
+    "preserve_exact": true
+  },
+  {
+    "id": "dev_en_percent_and_negation",
+    "split": "dev",
+    "language": "en",
+    "category": "percentage",
+    "input": "Keep at least seventy five percent, but not more than eighty percent.",
+    "expected": "Keep at least 75%, but not more than 80%.",
+    "required": ["at least 75\\s?%", "not more than 80\\s?%"],
+    "forbidden": ["seventy five percent", "eighty percent"],
+    "negations": ["not"]
+  },
+  {
+    "id": "dev_en_ordinal_list",
+    "split": "dev",
+    "language": "en",
+    "category": "ordinal_list",
+    "input": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+    "expected": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+    "required": ["(?mi)^\\s*1[.)]\\s+verify the amount", "(?mi)^\\s*2[.)]\\s+keep the minus sign", "(?mi)^\\s*3[.)]\\s+do not change the account number"],
+    "negations": ["not"],
+    "list_items": 3
+  },
+  {
+    "id": "dev_es_money_date",
+    "split": "dev",
+    "language": "es",
+    "category": "money",
+    "input": "El pago de mil doscientos euros vence el quince de octubre de dos mil veintiséis.",
+    "expected": "El pago de 1.200 € vence el 15 de octubre de 2026.",
+    "required": ["(?:1[ .]?200\\s?(?:€|euros?)|€\\s?1[ .]?200)", "15 de octubre", "2026"],
+    "forbidden": ["mil doscientos", "quince de octubre", "dos mil veintiséis"]
+  },
+  {
+    "id": "dev_account_noop",
+    "split": "dev",
+    "language": "es",
+    "category": "identifier",
+    "input": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+    "expected": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+    "entities": ["ES12 3456 7890 1234 5678 9012", "ES12 3456 7890 1234 5678 9013"],
+    "negations": ["no"],
+    "preserve_exact": true
+  },
+
+  {
+    "id": "held_ru_percent",
+    "split": "heldout",
+    "language": "ru",
+    "category": "percentage",
+    "input": "Готовность сто процентов, отклонение ноль процентов.",
+    "expected": "Готовность — 100%, отклонение — 0%.",
+    "required": ["100\\s?%", "0\\s?%"],
+    "forbidden": ["сто процентов", "ноль процентов"]
+  },
+  {
+    "id": "held_ru_percent_negation",
+    "split": "heldout",
+    "language": "ru",
+    "category": "percentage",
+    "input": "Комиссия не больше двух с половиной процентов.",
+    "expected": "Комиссия — не больше 2,5%.",
+    "required": ["не больше 2[,.]5\\s?%"],
+    "forbidden": ["двух с половиной процентов"],
+    "negations": ["не"]
+  },
+  {
+    "id": "held_ru_literal_ordinal",
+    "split": "heldout",
+    "language": "ru",
+    "category": "literal_prose",
+    "input": "Он впервые увидел второй берег, когда первый уже исчез в тумане.",
+    "expected": "Он впервые увидел второй берег, когда первый уже исчез в тумане.",
+    "required": ["второй берег", "первый уже исчез"],
+    "forbidden": ["(?m)^\\s*[12][.)]"],
+    "preserve_exact": true
+  },
+  {
+    "id": "held_ru_ordinal_list",
+    "split": "heldout",
+    "language": "ru",
+    "category": "ordinal_list",
+    "input": "Во-первых, открыть файл; во-вторых, проверить сумму; в-третьих, не исправлять IBAN.",
+    "expected": "1. Открыть файл.\n2. Проверить сумму.\n3. Не исправлять IBAN.",
+    "required": ["(?m)^\\s*1[.)]\\s+Открыть файл", "(?m)^\\s*2[.)]\\s+Проверить сумму", "(?m)^\\s*3[.)]\\s+Не исправлять IBAN"],
+    "entities": ["IBAN"],
+    "negations": ["не"],
+    "list_items": 3
+  },
+  {
+    "id": "held_ru_money_decimal",
+    "split": "heldout",
+    "language": "ru",
+    "category": "money",
+    "input": "Возврат составил сто двадцать три евро сорок пять центов.",
+    "expected": "Возврат составил 123,45 €.",
+    "required": ["(?:123[,.]45\\s?(?:€|евро)|€\\s?123[,.]45)"],
+    "forbidden": ["сто двадцать три", "сорок пять центов"]
+  },
+  {
+    "id": "held_ru_date",
+    "split": "heldout",
+    "language": "ru",
+    "category": "date",
+    "input": "Документы поданы второго февраля две тысячи двадцать пятого года.",
+    "expected": "Документы поданы 2 февраля 2025 года.",
+    "required": ["2(?:-го)? февраля", "2025"],
+    "forbidden": ["второго февраля", "две тысячи двадцать пятого"]
+  },
+  {
+    "id": "held_ru_version",
+    "split": "heldout",
+    "language": "ru",
+    "category": "version",
+    "input": "Обнови с версии один точка девять до версии два точка ноль, но не до два точка один.",
+    "expected": "Обнови с версии 1.9 до версии 2.0, но не до 2.1.",
+    "required": ["1\\.9", "2\\.0", "не до 2\\.1"],
+    "forbidden": ["один точка", "два точка"],
+    "negations": ["не"]
+  },
+  {
+    "id": "held_ru_phone_noop",
+    "split": "heldout",
+    "language": "ru",
+    "category": "phone",
+    "input": "Позвони по номеру +34 699 001 122, не по +34 699 001 121.",
+    "expected": "Позвони по номеру +34 699 001 122, не по +34 699 001 121.",
+    "entities": ["+34 699 001 122", "+34 699 001 121"],
+    "negations": ["не"],
+    "preserve_exact": true
+  },
+  {
+    "id": "held_document_noop",
+    "split": "heldout",
+    "language": "ru",
+    "category": "identifier",
+    "input": "Номер expediente EX-07/2026-AB, паспорт 53 04 771122.",
+    "expected": "Номер expediente EX-07/2026-AB, паспорт 53 04 771122.",
+    "entities": ["EX-07/2026-AB", "53 04 771122"],
+    "preserve_exact": true
+  },
+  {
+    "id": "held_account_noop",
+    "split": "heldout",
+    "language": "ru",
+    "category": "identifier",
+    "input": "Перевод на IBAN ES66 1234 5678 9012 3456 7890.",
+    "expected": "Перевод на IBAN ES66 1234 5678 9012 3456 7890.",
+    "entities": ["IBAN", "ES66 1234 5678 9012 3456 7890"],
+    "preserve_exact": true
+  },
+  {
+    "id": "held_en_range_negation",
+    "split": "heldout",
+    "language": "en",
+    "category": "range",
+    "input": "Allow between five and seven days, but no more than seven.",
+    "expected": "Allow 5–7 days, but no more than 7.",
+    "required": ["5\\s*(?:[-–—]|to)\\s*7 days", "no more than 7"],
+    "forbidden": ["between five and seven", "more than seven"],
+    "negations": ["no"]
+  },
+  {
+    "id": "held_en_literal_ordinal",
+    "split": "heldout",
+    "language": "en",
+    "category": "literal_prose",
+    "input": "Her first novel made the second winter feel less lonely.",
+    "expected": "Her first novel made the second winter feel less lonely.",
+    "required": ["first novel", "second winter"],
+    "forbidden": ["(?m)^\\s*[12][.)]"],
+    "preserve_exact": true
+  },
+  {
+    "id": "held_es_percent",
+    "split": "heldout",
+    "language": "es",
+    "category": "percentage",
+    "input": "La cobertura es del noventa y nueve coma cinco por ciento.",
+    "expected": "La cobertura es del 99,5%.",
+    "required": ["99[,.]5\\s?%"],
+    "forbidden": ["noventa y nueve", "por ciento"]
+  },
+  {
+    "id": "held_es_ordinal_list",
+    "split": "heldout",
+    "language": "es",
+    "category": "ordinal_list",
+    "input": "Primero, revisar el NIE; segundo, confirmar la fecha; tercero, no cambiar el número.",
+    "expected": "1. Revisar el NIE.\n2. Confirmar la fecha.\n3. No cambiar el número.",
+    "required": ["(?mi)^\\s*1[.)]\\s+revisar el NIE", "(?mi)^\\s*2[.)]\\s+confirmar la fecha", "(?mi)^\\s*3[.)]\\s+no cambiar el número"],
+    "entities": ["NIE"],
+    "negations": ["no"],
+    "list_items": 3
+  },
+  {
+    "id": "held_digits_noop",
+    "split": "heldout",
+    "language": "en",
+    "category": "noop",
+    "input": "Invoice 2026-0081 totals €1,024.50; VAT is 21%; due 2026-09-30.",
+    "expected": "Invoice 2026-0081 totals €1,024.50; VAT is 21%; due 2026-09-30.",
+    "entities": ["2026-0081", "€1,024.50", "VAT", "21%", "2026-09-30"],
+    "preserve_exact": true
+  }
+]

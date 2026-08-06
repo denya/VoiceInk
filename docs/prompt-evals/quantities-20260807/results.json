@@ -1,0 +1,5591 @@
+{
+  "state": "complete",
+  "decision": "winner",
+  "winner": "v11_examples",
+  "model": "gemini-3.5-flash-lite",
+  "model_readback": "gemini-3.5-flash-lite",
+  "temperature": 0.3,
+  "variant_count": 15,
+  "dataset_sha256": "03cdd61a556be56fba784738d7ac1e0202a58de46551c698070a33c83f4adbf7",
+  "control_prompt_sha256": "748ce195e853fe9cd1201d1c7ef7762366945c9be3e23f1e2be98064a435dea5",
+  "variants": [
+    {
+      "id": "v00_control",
+      "description": "Current Denya hybrid prompt",
+      "sha256": "748ce195e853fe9cd1201d1c7ef7762366945c9be3e23f1e2be98064a435dea5",
+      "characters": 5533
+    },
+    {
+      "id": "v01_numeric_direct",
+      "description": "Direct numeric rendering",
+      "sha256": "c882bc9a0adb4df8f2e98bbc6c5f9b16c752bda6b7a95111556fa735556e7d33",
+      "characters": 5735
+    },
+    {
+      "id": "v02_quantity_context",
+      "description": "Quantity-context threshold",
+      "sha256": "911913a660d40170527ea97403e20a950dc85ddb5599dcd23d3687be955d394d",
+      "characters": 5773
+    },
+    {
+      "id": "v03_multilingual_numbers",
+      "description": "Multilingual numeric cues",
+      "sha256": "84be8b3c961c524ba786eda9d2de386b3786aff850f902355bec7d4510a6d771",
+      "characters": 5798
+    },
+    {
+      "id": "v04_value_ledger",
+      "description": "Value-preserving normalization",
+      "sha256": "0b6c72277b80e2364d31908318e01435915ad567825aee6e866e4fe71cc4b4b9",
+      "characters": 5879
+    },
+    {
+      "id": "v05_percent_focus",
+      "description": "Percentage-focused rule",
+      "sha256": "aeec197d6d26bf0fdf671dc68a0e2f3b4b039c6f28152b7b1f8822eda901c277",
+      "characters": 5786
+    },
+    {
+      "id": "v06_money_decimal",
+      "description": "Money and decimal rule",
+      "sha256": "cbc124eaf5dbec67e9695724b4e70217f9ebe5f200b2edb3adacb4ea7eb9d74c",
+      "characters": 5790
+    },
+    {
+      "id": "v07_dates_versions",
+      "description": "Dates, times, ranges, and versions",
+      "sha256": "1fbfc5f357e34f97d9c55222484cfd0a3a32f331f2667e2bcc7943d3ade9ad30",
+      "characters": 5768
+    },
+    {
+      "id": "v08_ordinal_lists",
+      "description": "Enumeration-only ordinal lists",
+      "sha256": "54d1cada505e37fb35c5d4430c8a745eae809b88d060e4d955d16b6ae9502917",
+      "characters": 5790
+    },
+    {
+      "id": "v09_format_intent",
+      "description": "Dictated formatting intent",
+      "sha256": "7e246260ca2e14fcb909d523d9d12afaaeef834a28e9e0dc0be83a689f6054fb",
+      "characters": 5830
+    },
+    {
+      "id": "v10_numeric_then_audit",
+      "description": "Render then audit",
+      "sha256": "a75a7adaef8b9a2f7b14dbd312e0bda2c918979fdf9b456a03e092cc83ef5d00",
+      "characters": 5825
+    },
+    {
+      "id": "v11_examples",
+      "description": "Cross-language examples",
+      "sha256": "5ea669e2bd16549245bc19958a3d710f842e3788fcddad7f6f7eefb0c40e23a4",
+      "characters": 5835
+    },
+    {
+      "id": "v12_conservative_notation",
+      "description": "Conservative notation boundary",
+      "sha256": "31f3be12b949c28f7f42de88952f985b82850449dbc90cb9f1277f0b0cb6fae1",
+      "characters": 5886
+    },
+    {
+      "id": "v13_combined_compact",
+      "description": "Compact numeric and enumeration contract",
+      "sha256": "52f44399441dba82969c2d6ed28068da1940d8f4a4892b89c541260d8623fdbd",
+      "characters": 5892
+    },
+    {
+      "id": "v14_combined_explicit",
+      "description": "Explicit protected numeric contract",
+      "sha256": "111f1d7389cd31c1f577cc9e3d7f5bc17edb86c2b34ddb1236c1ea48167209a3",
+      "characters": 6244
+    }
+  ],
+  "split_counts": {
+    "train": 12,
+    "dev": 15,
+    "heldout": 15
+  },
+  "envelope": {
+    "system": "candidate prompt",
+    "user": "\\n<USER_MESSAGE>\\n{transcript}\\n</USER_MESSAGE>",
+    "source_aware_filter": true
+  },
+  "dev": {
+    "summary": [
+      {
+        "variant_id": "v00_control",
+        "passes": 7,
+        "total": 15,
+        "mean_semantic_score": 70.83,
+        "median_latency_ms": 635,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_en_percent_and_negation",
+          "dev_ru_date_time",
+          "dev_ru_money",
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_range",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v01_numeric_direct",
+        "passes": 12,
+        "total": 15,
+        "mean_semantic_score": 87.3,
+        "median_latency_ms": 548,
+        "failed_cases": [
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v02_quantity_context",
+        "passes": 12,
+        "total": 15,
+        "mean_semantic_score": 87.3,
+        "median_latency_ms": 559,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v03_multilingual_numbers",
+        "passes": 15,
+        "total": 15,
+        "mean_semantic_score": 97.35,
+        "median_latency_ms": 636,
+        "failed_cases": []
+      },
+      {
+        "variant_id": "v04_value_ledger",
+        "passes": 11,
+        "total": 15,
+        "mean_semantic_score": 83.81,
+        "median_latency_ms": 556,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v05_percent_focus",
+        "passes": 12,
+        "total": 15,
+        "mean_semantic_score": 88.32,
+        "median_latency_ms": 627,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_ru_range",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v06_money_decimal",
+        "passes": 11,
+        "total": 15,
+        "mean_semantic_score": 83.66,
+        "median_latency_ms": 565,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_en_percent_and_negation",
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity"
+        ]
+      },
+      {
+        "variant_id": "v07_dates_versions",
+        "passes": 11,
+        "total": 15,
+        "mean_semantic_score": 83.9,
+        "median_latency_ms": 551,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v08_ordinal_lists",
+        "passes": 11,
+        "total": 15,
+        "mean_semantic_score": 83.05,
+        "median_latency_ms": 553,
+        "failed_cases": [
+          "dev_en_percent_and_negation",
+          "dev_es_money_date",
+          "dev_ru_percent_quantity",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v09_format_intent",
+        "passes": 11,
+        "total": 15,
+        "mean_semantic_score": 84.92,
+        "median_latency_ms": 561,
+        "failed_cases": [
+          "dev_en_percent_and_negation",
+          "dev_ru_percent_quantity",
+          "dev_ru_range",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v10_numeric_then_audit",
+        "passes": 13,
+        "total": 15,
+        "mean_semantic_score": 90.7,
+        "median_latency_ms": 513,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v11_examples",
+        "passes": 15,
+        "total": 15,
+        "mean_semantic_score": 97.51,
+        "median_latency_ms": 523,
+        "failed_cases": []
+      },
+      {
+        "variant_id": "v12_conservative_notation",
+        "passes": 13,
+        "total": 15,
+        "mean_semantic_score": 91.09,
+        "median_latency_ms": 611,
+        "failed_cases": [
+          "dev_en_ordinal_list",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v13_combined_compact",
+        "passes": 13,
+        "total": 15,
+        "mean_semantic_score": 90.61,
+        "median_latency_ms": 657,
+        "failed_cases": [
+          "dev_ru_percent_quantity",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      {
+        "variant_id": "v14_combined_explicit",
+        "passes": 14,
+        "total": 15,
+        "mean_semantic_score": 93.95,
+        "median_latency_ms": 621,
+        "failed_cases": [
+          "dev_ru_percent_quantity"
+        ]
+      }
+    ],
+    "shortlist": [
+      "v11_examples",
+      "v03_multilingual_numbers"
+    ],
+    "regressions": {
+      "v11_examples": {
+        "new": [],
+        "resolved": [
+          "dev_en_ordinal_list",
+          "dev_en_percent_and_negation",
+          "dev_ru_date_time",
+          "dev_ru_money",
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_range",
+          "dev_ru_signed_decimal"
+        ]
+      },
+      "v03_multilingual_numbers": {
+        "new": [],
+        "resolved": [
+          "dev_en_ordinal_list",
+          "dev_en_percent_and_negation",
+          "dev_ru_date_time",
+          "dev_ru_money",
+          "dev_ru_ordinal_list",
+          "dev_ru_percent_quantity",
+          "dev_ru_range",
+          "dev_ru_signed_decimal"
+        ]
+      }
+    }
+  },
+  "heldout": {
+    "summary": [
+      {
+        "variant_id": "v00_control",
+        "passes": 9,
+        "total": 15,
+        "mean_semantic_score": 79.6,
+        "median_latency_ms": 634,
+        "failed_cases": [
+          "held_en_range_negation",
+          "held_es_ordinal_list",
+          "held_ru_money_decimal",
+          "held_ru_ordinal_list",
+          "held_ru_percent",
+          "held_ru_percent_negation"
+        ]
+      },
+      {
+        "variant_id": "v11_examples",
+        "passes": 13,
+        "total": 15,
+        "mean_semantic_score": 92.14,
+        "median_latency_ms": 504,
+        "failed_cases": [
+          "held_en_range_negation",
+          "held_es_ordinal_list"
+        ]
+      },
+      {
+        "variant_id": "v03_multilingual_numbers",
+        "passes": 12,
+        "total": 15,
+        "mean_semantic_score": 89.0,
+        "median_latency_ms": 496,
+        "failed_cases": [
+          "held_en_range_negation",
+          "held_es_ordinal_list",
+          "held_ru_date"
+        ]
+      }
+    ],
+    "regressions": {
+      "v11_examples": {
+        "new": [],
+        "resolved": [
+          "held_ru_money_decimal",
+          "held_ru_ordinal_list",
+          "held_ru_percent",
+          "held_ru_percent_negation"
+        ]
+      },
+      "v03_multilingual_numbers": {
+        "new": [
+          "held_ru_date"
+        ],
+        "resolved": [
+          "held_ru_money_decimal",
+          "held_ru_ordinal_list",
+          "held_ru_percent",
+          "held_ru_percent_negation"
+        ]
+      }
+    },
+    "category_deltas": {
+      "v11_examples": {
+        "date": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "identifier": {
+          "control_passes": 2,
+          "candidate_passes": 2,
+          "total": 2
+        },
+        "literal_prose": {
+          "control_passes": 2,
+          "candidate_passes": 2,
+          "total": 2
+        },
+        "money": {
+          "control_passes": 0,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "noop": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "ordinal_list": {
+          "control_passes": 0,
+          "candidate_passes": 1,
+          "total": 2
+        },
+        "percentage": {
+          "control_passes": 1,
+          "candidate_passes": 3,
+          "total": 3
+        },
+        "phone": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "range": {
+          "control_passes": 0,
+          "candidate_passes": 0,
+          "total": 1
+        },
+        "version": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        }
+      },
+      "v03_multilingual_numbers": {
+        "date": {
+          "control_passes": 1,
+          "candidate_passes": 0,
+          "total": 1
+        },
+        "identifier": {
+          "control_passes": 2,
+          "candidate_passes": 2,
+          "total": 2
+        },
+        "literal_prose": {
+          "control_passes": 2,
+          "candidate_passes": 2,
+          "total": 2
+        },
+        "money": {
+          "control_passes": 0,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "noop": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "ordinal_list": {
+          "control_passes": 0,
+          "candidate_passes": 1,
+          "total": 2
+        },
+        "percentage": {
+          "control_passes": 1,
+          "candidate_passes": 3,
+          "total": 3
+        },
+        "phone": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        },
+        "range": {
+          "control_passes": 0,
+          "candidate_passes": 0,
+          "total": 1
+        },
+        "version": {
+          "control_passes": 1,
+          "candidate_passes": 1,
+          "total": 1
+        }
+      }
+    },
+    "overfitting": {
+      "v11_examples": {
+        "dev_pass_delta": 8,
+        "heldout_pass_delta": 4,
+        "new_heldout_regressions": []
+      },
+      "v03_multilingual_numbers": {
+        "dev_pass_delta": 8,
+        "heldout_pass_delta": 3,
+        "new_heldout_regressions": [
+          "held_ru_date"
+        ]
+      }
+    }
+  },
+  "smoke": {
+    "case_id": "held_ru_percent",
+    "output": "Готовность 100%, отклонение 0%.",
+    "model_readback": "gemini-3.5-flash-lite",
+    "latency_ms": 653,
+    "usage": {
+      "completion_tokens": 13,
+      "prompt_tokens": 1451,
+      "total_tokens": 1464
+    },
+    "gate": {
+      "passed": true,
+      "failures": [],
+      "semantic_score": 93.94
+    }
+  },
+  "generations": [
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 617,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1404,
+        "total_tokens": 1466
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. First, verify the amount.\n2. Second, keep the minus sign.\n3. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 498,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1364,
+        "total_tokens": 1394
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least seventy-five percent, but not more than eighty percent.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 614,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1356,
+        "total_tokens": 1371
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:at least 75\\s?%",
+          "missing:not more than 80\\s?%",
+          "forbidden:eighty percent"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 678,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1363,
+        "total_tokens": 1386
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн двадцать первого сентября две тысячи двадцать шестого года в девять ноль пять.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 688,
+      "usage": {
+        "completion_tokens": 19,
+        "prompt_tokens": 1361,
+        "total_tokens": 1380
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:21(?:-го)? сентября",
+          "missing:2026",
+          "missing:0?9[:.]05",
+          "forbidden:двадцать первого сентября",
+          "forbidden:две тысячи двадцать шестого",
+          "forbidden:девять ноль пять"
+        ],
+        "semantic_score": 44.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 505,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1374,
+        "total_tokens": 1406
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 564,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1372,
+        "total_tokens": 1402
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 753,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1358,
+        "total_tokens": 1374
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_money",
+      "output": "Оплата восемьсот пятьдесят евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 634,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1355,
+        "total_tokens": 1368
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?:850\\s?(?:€|евро)|€\\s?850)",
+          "forbidden:восемьсот пятьдесят"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "Первый пункт — проверить паспорт, второй — сверить дату, третий — не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 688,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1362,
+        "total_tokens": 1382
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?m)^\\s*1[.)]\\s+Проверить паспорт",
+          "missing:(?m)^\\s*2[.)]\\s+Сверить дату",
+          "missing:(?m)^\\s*3[.)]\\s+Не менять номер дела",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили сто процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 708,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1354,
+        "total_tokens": 1366
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%",
+          "forbidden:сто процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 546,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1362,
+        "total_tokens": 1382
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от двадцати пяти до тридцати заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 687,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1358,
+        "total_tokens": 1374
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:25\\s*(?:[-–—]|до)\\s*30",
+          "forbidden:двадцати пяти",
+          "forbidden:тридцати"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс минус двенадцать целых семь десятых евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 635,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1355,
+        "total_tokens": 1368
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:[-−]12[,.]7",
+          "missing:€",
+          "forbidden:минус двенадцать",
+          "forbidden:семь десятых"
+        ],
+        "semantic_score": 30.77
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v00_control",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 778,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1363,
+        "total_tokens": 1385
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 627,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1443,
+        "total_tokens": 1505
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 554,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1403,
+        "total_tokens": 1427
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 487,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1395,
+        "total_tokens": 1410
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 558,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1402,
+        "total_tokens": 1425
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 506,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1400,
+        "total_tokens": 1421
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 564,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1413,
+        "total_tokens": 1445
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 626,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1411,
+        "total_tokens": 1441
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 501,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1397,
+        "total_tokens": 1413
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 508,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1394,
+        "total_tokens": 1406
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "Первый пункт — проверить паспорт, второй — сверить дату, третий — не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 491,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1401,
+        "total_tokens": 1421
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?m)^\\s*1[.)]\\s+Проверить паспорт",
+          "missing:(?m)^\\s*2[.)]\\s+Сверить дату",
+          "missing:(?m)^\\s*3[.)]\\s+Не менять номер дела",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100 процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 486,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1393,
+        "total_tokens": 1408
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 553,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1401,
+        "total_tokens": 1421
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 500,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1397,
+        "total_tokens": 1412
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 675,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1394,
+        "total_tokens": 1404
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v01_numeric_direct",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 548,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1402,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 610,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1454,
+        "total_tokens": 1516
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_en_ordinal_list",
+      "output": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 499,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1414,
+        "total_tokens": 1436
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1406,
+        "total_tokens": 1421
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1413,
+        "total_tokens": 1436
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 507,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1411,
+        "total_tokens": 1432
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1424,
+        "total_tokens": 1456
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 563,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1422,
+        "total_tokens": 1452
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1408,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 497,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1405,
+        "total_tokens": 1417
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 616,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1412,
+        "total_tokens": 1435
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100 процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 498,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1404,
+        "total_tokens": 1419
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 499,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1412,
+        "total_tokens": 1432
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 626,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1408,
+        "total_tokens": 1423
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 504,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1405,
+        "total_tokens": 1415
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v02_quantity_context",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 ее нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1413,
+        "total_tokens": 1435
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 620,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1457,
+        "total_tokens": 1519
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 636,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1417,
+        "total_tokens": 1441
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 642,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1409,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 € vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 612,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1416,
+        "total_tokens": 1439
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 98.99
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 618,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1414,
+        "total_tokens": 1435
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 669,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1427,
+        "total_tokens": 1459
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1593,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1425,
+        "total_tokens": 1455
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 651,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1411,
+        "total_tokens": 1427
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 €, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 483,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1408,
+        "total_tokens": 1419
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.55
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 552,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1415,
+        "total_tokens": 1438
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100% плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 864,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1407,
+        "total_tokens": 1422
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1658,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1415,
+        "total_tokens": 1435
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 493,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1411,
+        "total_tokens": 1426
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 €",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 734,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1408,
+        "total_tokens": 1417
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.87
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 ее нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 616,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1416,
+        "total_tokens": 1438
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 683,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1477,
+        "total_tokens": 1539
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_en_ordinal_list",
+      "output": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 3660,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1437,
+        "total_tokens": 1459
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1785,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1429,
+        "total_tokens": 1444
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 555,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1436,
+        "total_tokens": 1459
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 9:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 553,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1434,
+        "total_tokens": 1454
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.1
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 554,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1447,
+        "total_tokens": 1479
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 678,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1445,
+        "total_tokens": 1475
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1662,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1431,
+        "total_tokens": 1447
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 510,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1428,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Первый пункт — проверить паспорт.\n2. Второй — сверить дату.\n3. Третий — не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 615,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1435,
+        "total_tokens": 1463
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?m)^\\s*1[.)]\\s+Проверить паспорт",
+          "missing:(?m)^\\s*2[.)]\\s+Сверить дату",
+          "missing:(?m)^\\s*3[.)]\\s+Не менять номер дела"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100 процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 494,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1427,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 496,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1435,
+        "total_tokens": 1455
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 616,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1431,
+        "total_tokens": 1446
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс минус 12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 556,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1428,
+        "total_tokens": 1439
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:[-−]12[,.]7",
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v04_value_ledger",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 540,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1436,
+        "total_tokens": 1458
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 733,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1459,
+        "total_tokens": 1521
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_en_ordinal_list",
+      "output": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 667,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1419,
+        "total_tokens": 1441
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 3654,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1411,
+        "total_tokens": 1426
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 627,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1418,
+        "total_tokens": 1441
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 9:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 581,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1416,
+        "total_tokens": 1436
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.1
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 7847,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1429,
+        "total_tokens": 1461
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 520,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1427,
+        "total_tokens": 1457
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 524,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1413,
+        "total_tokens": 1429
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1633,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1410,
+        "total_tokens": 1422
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 518,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1417,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100% плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1685,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1409,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 497,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1417,
+        "total_tokens": 1437
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от двадцати пяти до тридцати заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 488,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1413,
+        "total_tokens": 1429
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:25\\s*(?:[-–—]|до)\\s*30",
+          "forbidden:двадцати пяти",
+          "forbidden:тридцати"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 3747,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1410,
+        "total_tokens": 1420
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v05_percent_focus",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 562,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1418,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1766,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1456,
+        "total_tokens": 1518
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. First, verify the amount.\n2. Second, keep the minus sign.\n3. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1416,
+        "total_tokens": 1446
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75 percent, but not more than 80 percent.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 558,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1408,
+        "total_tokens": 1425
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:at least 75\\s?%",
+          "missing:not more than 80\\s?%"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 € vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 501,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1415,
+        "total_tokens": 1438
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 98.99
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 9:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 532,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1413,
+        "total_tokens": 1433
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.1
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 515,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1426,
+        "total_tokens": 1458
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 666,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1424,
+        "total_tokens": 1454
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 565,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1410,
+        "total_tokens": 1426
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 €, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 532,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1407,
+        "total_tokens": 1418
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.55
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Первый пункт — проверить паспорт.\n2. Второй — сверить дату.\n3. Третий — не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 586,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1414,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?m)^\\s*1[.)]\\s+Проверить паспорт",
+          "missing:(?m)^\\s*2[.)]\\s+Сверить дату",
+          "missing:(?m)^\\s*3[.)]\\s+Не менять номер дела"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили сто процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 618,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1406,
+        "total_tokens": 1418
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%",
+          "forbidden:сто процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1620,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1414,
+        "total_tokens": 1434
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 526,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1410,
+        "total_tokens": 1425
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 €",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 617,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1407,
+        "total_tokens": 1416
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.87
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v06_money_decimal",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 ее нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 596,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1415,
+        "total_tokens": 1437
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 563,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1449,
+        "total_tokens": 1511
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_en_ordinal_list",
+      "output": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 476,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1409,
+        "total_tokens": 1431
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 568,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1401,
+        "total_tokens": 1416
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 528,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1408,
+        "total_tokens": 1431
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 566,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1406,
+        "total_tokens": 1427
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 493,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1419,
+        "total_tokens": 1451
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 491,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1417,
+        "total_tokens": 1447
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 551,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1403,
+        "total_tokens": 1419
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 510,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1400,
+        "total_tokens": 1412
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "Первый пункт — проверить паспорт, второй — сверить дату, третий — не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 534,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1407,
+        "total_tokens": 1427
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?m)^\\s*1[.)]\\s+Проверить паспорт",
+          "missing:(?m)^\\s*2[.)]\\s+Сверить дату",
+          "missing:(?m)^\\s*3[.)]\\s+Не менять номер дела",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили сто процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 654,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1399,
+        "total_tokens": 1411
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%",
+          "forbidden:сто процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 620,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1407,
+        "total_tokens": 1427
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 570,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1403,
+        "total_tokens": 1418
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс минус 12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 497,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1400,
+        "total_tokens": 1411
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:[-−]12[,.]7",
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v07_dates_versions",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 566,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1408,
+        "total_tokens": 1430
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 742,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1473,
+        "total_tokens": 1535
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 558,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1433,
+        "total_tokens": 1457
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least seventy-five percent, but not more than eighty percent.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 502,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1425,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:at least 75\\s?%",
+          "missing:not more than 80\\s?%",
+          "forbidden:eighty percent"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de mil doscientos euros vence el quince de octubre de dos mil veintiséis.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 495,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1432,
+        "total_tokens": 1453
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?:1[ .]?200\\s?(?:€|euros?)|€\\s?1[ .]?200)",
+          "missing:15 de octubre",
+          "missing:2026",
+          "forbidden:mil doscientos",
+          "forbidden:quince de octubre",
+          "forbidden:dos mil veintiséis"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 9:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1430,
+        "total_tokens": 1450
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.1
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 500,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1443,
+        "total_tokens": 1475
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 621,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1441,
+        "total_tokens": 1471
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1427,
+        "total_tokens": 1443
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 627,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1424,
+        "total_tokens": 1436
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 540,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1431,
+        "total_tokens": 1454
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100 процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 567,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1423,
+        "total_tokens": 1438
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 543,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1431,
+        "total_tokens": 1451
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 496,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1427,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс минус двенадцать целых семь десятых евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 511,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1424,
+        "total_tokens": 1437
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:[-−]12[,.]7",
+          "missing:€",
+          "forbidden:минус двенадцать",
+          "forbidden:семь десятых"
+        ],
+        "semantic_score": 30.77
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v08_ordinal_lists",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 553,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1432,
+        "total_tokens": 1454
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 589,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1461,
+        "total_tokens": 1523
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1421,
+        "total_tokens": 1445
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least seventy-five percent, but not more than eighty percent.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 558,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1413,
+        "total_tokens": 1428
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:at least 75\\s?%",
+          "missing:not more than 80\\s?%",
+          "forbidden:eighty percent"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 743,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1420,
+        "total_tokens": 1443
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 9:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 517,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1418,
+        "total_tokens": 1438
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.1
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 562,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1431,
+        "total_tokens": 1463
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 576,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1429,
+        "total_tokens": 1459
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 524,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1415,
+        "total_tokens": 1431
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1412,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 611,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1419,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили сто процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 624,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1411,
+        "total_tokens": 1423
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%",
+          "forbidden:сто процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 582,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1419,
+        "total_tokens": 1439
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от двадцати пяти до тридцати заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 492,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1415,
+        "total_tokens": 1431
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:25\\s*(?:[-–—]|до)\\s*30",
+          "forbidden:двадцати пяти",
+          "forbidden:тридцати"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс минус 12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 435,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1412,
+        "total_tokens": 1423
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:[-−]12[,.]7",
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v09_format_intent",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 519,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1420,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 583,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1466,
+        "total_tokens": 1528
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_en_ordinal_list",
+      "output": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 581,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1426,
+        "total_tokens": 1448
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 510,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1418,
+        "total_tokens": 1433
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 518,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1425,
+        "total_tokens": 1448
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 525,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1423,
+        "total_tokens": 1444
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 576,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1436,
+        "total_tokens": 1468
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 574,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1434,
+        "total_tokens": 1464
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 509,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1420,
+        "total_tokens": 1436
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 497,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1417,
+        "total_tokens": 1429
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1424,
+        "total_tokens": 1447
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100% плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 513,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1416,
+        "total_tokens": 1431
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 509,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1424,
+        "total_tokens": 1444
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 509,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1420,
+        "total_tokens": 1435
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 499,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1417,
+        "total_tokens": 1427
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v10_numeric_then_audit",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 491,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1425,
+        "total_tokens": 1447
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 635,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1501,
+        "total_tokens": 1563
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 505,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1461,
+        "total_tokens": 1485
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 468,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1453,
+        "total_tokens": 1468
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de €1.200 vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 626,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1460,
+        "total_tokens": 1483
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.97
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 523,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1458,
+        "total_tokens": 1479
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 548,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1471,
+        "total_tokens": 1503
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 510,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1469,
+        "total_tokens": 1499
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 498,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1455,
+        "total_tokens": 1471
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_money",
+      "output": "Оплата €850, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 573,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1452,
+        "total_tokens": 1463
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 91.23
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 565,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1459,
+        "total_tokens": 1482
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100% плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 525,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1451,
+        "total_tokens": 1466
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 470,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1459,
+        "total_tokens": 1479
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 518,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1455,
+        "total_tokens": 1470
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс −12,7 €.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 640,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1452,
+        "total_tokens": 1461
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.75
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v11_examples",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 498,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1460,
+        "total_tokens": 1482
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 613,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1471,
+        "total_tokens": 1533
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_en_ordinal_list",
+      "output": "First, verify the amount. Second, keep the minus sign. Third, do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 7818,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1431,
+        "total_tokens": 1453
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+verify the amount",
+          "missing:(?mi)^\\s*2[.)]\\s+keep the minus sign",
+          "missing:(?mi)^\\s*3[.)]\\s+do not change the account number",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1592,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1423,
+        "total_tokens": 1438
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 € vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 620,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1430,
+        "total_tokens": 1453
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 98.99
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1428,
+        "total_tokens": 1449
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1599,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1441,
+        "total_tokens": 1473
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 559,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1439,
+        "total_tokens": 1469
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 611,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1425,
+        "total_tokens": 1441
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 625,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1422,
+        "total_tokens": 1434
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 483,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1429,
+        "total_tokens": 1452
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100% плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 577,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1421,
+        "total_tokens": 1436
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 551,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1429,
+        "total_tokens": 1449
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1587,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1425,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 438,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1422,
+        "total_tokens": 1432
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v12_conservative_notation",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 ее нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 571,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1430,
+        "total_tokens": 1452
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1662,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1479,
+        "total_tokens": 1541
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 568,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1439,
+        "total_tokens": 1463
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1726,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1431,
+        "total_tokens": 1446
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 euros vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1642,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1438,
+        "total_tokens": 1461
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.2
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 9:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 657,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1436,
+        "total_tokens": 1456
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.1
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 3689,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1449,
+        "total_tokens": 1481
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 492,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1447,
+        "total_tokens": 1477
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 618,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1433,
+        "total_tokens": 1449
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 евро, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1662,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1430,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 88.52
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 540,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1437,
+        "total_tokens": 1460
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили сто процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1660,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1429,
+        "total_tokens": 1441
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%",
+          "forbidden:сто процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 502,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1437,
+        "total_tokens": 1457
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 602,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1433,
+        "total_tokens": 1448
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 евро.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1546,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1430,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:€"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v13_combined_compact",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 546,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1438,
+        "total_tokens": 1460
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_account_noop",
+      "output": "La cuenta es ES12 3456 7890 1234 5678 9012, no ES12 3456 7890 1234 5678 9013.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 654,
+      "usage": {
+        "completion_tokens": 62,
+        "prompt_tokens": 1551,
+        "total_tokens": 1613
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_en_ordinal_list",
+      "output": "1. Verify the amount.\n2. Keep the minus sign.\n3. Do not change the account number.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1607,
+      "usage": {
+        "completion_tokens": 24,
+        "prompt_tokens": 1511,
+        "total_tokens": 1535
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_en_percent_and_negation",
+      "output": "Keep at least 75%, but not more than 80%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 621,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1503,
+        "total_tokens": 1518
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_es_money_date",
+      "output": "El pago de 1200 € vence el 15 de octubre de 2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 658,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1510,
+        "total_tokens": 1533
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 98.99
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_date_time",
+      "output": "Дедлайн 21 сентября 2026 года в 09:05.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 554,
+      "usage": {
+        "completion_tokens": 21,
+        "prompt_tokens": 1508,
+        "total_tokens": 1529
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 97.44
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_digits_noop",
+      "output": "Скидка 12,5%, итог 437,20 €, дата 07.08.2026.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1607,
+      "usage": {
+        "completion_tokens": 32,
+        "prompt_tokens": 1521,
+        "total_tokens": 1553
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_document_noop",
+      "output": "Сохрани номер NIE Y1234567X и дело UGE-2026-00419.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 16001,
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 1519,
+        "total_tokens": 1549
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_literal_ordinal",
+      "output": "На третий день море успокоилось, и первый луч солнца появился над водой.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 487,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1505,
+        "total_tokens": 1521
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_money",
+      "output": "Оплата 850 €, включая налог.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 487,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1502,
+        "total_tokens": 1513
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.55
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_ordinal_list",
+      "output": "1. Проверить паспорт.\n2. Сверить дату.\n3. Не менять номер дела.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 15998,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1509,
+        "total_tokens": 1532
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_percent_quantity",
+      "output": "Мы выполнили 100 процентов плана и не превысили бюджет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1593,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1501,
+        "total_tokens": 1516
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_phone_noop",
+      "output": "Мой номер +7 916 123-45-67.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 560,
+      "usage": {
+        "completion_tokens": 20,
+        "prompt_tokens": 1509,
+        "total_tokens": 1529
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_range",
+      "output": "Ожидаем от 25 до 30 заявок.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 488,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1505,
+        "total_tokens": 1520
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.33
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_signed_decimal",
+      "output": "Баланс -12,7 €",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 493,
+      "usage": {
+        "completion_tokens": 9,
+        "prompt_tokens": 1502,
+        "total_tokens": 1511
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 83.87
+      }
+    },
+    {
+      "stage": "dev",
+      "variant_id": "v14_combined_explicit",
+      "case_id": "dev_ru_version",
+      "output": "Ошибка появилась в версии 3.2.7, а в 3.2.8 её нет.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 561,
+      "usage": {
+        "completion_tokens": 22,
+        "prompt_tokens": 1510,
+        "total_tokens": 1532
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_account_noop",
+      "output": "Перевод на IBAN ES66 1234 5678 9012 3456 7890.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 517,
+      "usage": {
+        "completion_tokens": 34,
+        "prompt_tokens": 1376,
+        "total_tokens": 1410
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_digits_noop",
+      "output": "Invoice 2026-0081 totals €1,024.50; VAT is 21%; due 2026-09-30.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 695,
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1383,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_document_noop",
+      "output": "Номер expediente EX-07/2026-AB, паспорт 53 04 771122.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 680,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1371,
+        "total_tokens": 1400
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_en_literal_ordinal",
+      "output": "Her first novel made the second winter feel less lonely.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 522,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1353,
+        "total_tokens": 1364
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_en_range_negation",
+      "output": "Allow between five and seven days, but no more than seven.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 489,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1355,
+        "total_tokens": 1368
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:5\\s*(?:[-–—]|to)\\s*7 days",
+          "missing:no more than 7",
+          "forbidden:between five and seven",
+          "forbidden:more than seven"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_es_ordinal_list",
+      "output": "1. Primero, revisar el NIE.\n2. Segundo, confirmar la fecha.\n3. Tercero, no cambiar el número.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 634,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1361,
+        "total_tokens": 1389
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+revisar el NIE",
+          "missing:(?mi)^\\s*2[.)]\\s+confirmar la fecha",
+          "missing:(?mi)^\\s*3[.)]\\s+no cambiar el número"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_es_percent",
+      "output": "La cobertura es del 99,5%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 522,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1355,
+        "total_tokens": 1365
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_date",
+      "output": "Документы поданы 2 февраля 2025 года.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 7744,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1356,
+        "total_tokens": 1371
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_literal_ordinal",
+      "output": "Он впервые увидел второй берег, когда первый уже исчез в тумане.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 15901,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1359,
+        "total_tokens": 1376
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_money_decimal",
+      "output": "Возврат составил 123 евро 45 центов.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1578,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1356,
+        "total_tokens": 1371
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?:123[,.]45\\s?(?:€|евро)|€\\s?123[,.]45)"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_ordinal_list",
+      "output": "Во-первых, открыть файл; во-вторых, проверить сумму; в-третьих, не исправлять IBAN.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 7866,
+      "usage": {
+        "completion_tokens": 26,
+        "prompt_tokens": 1368,
+        "total_tokens": 1394
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?m)^\\s*1[.)]\\s+Открыть файл",
+          "missing:(?m)^\\s*2[.)]\\s+Проверить сумму",
+          "missing:(?m)^\\s*3[.)]\\s+Не исправлять IBAN",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_percent",
+      "output": "Готовность сто процентов, отклонение ноль процентов.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 492,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1354,
+        "total_tokens": 1366
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:100\\s?%",
+          "missing:0\\s?%",
+          "forbidden:сто процентов",
+          "forbidden:ноль процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_percent_negation",
+      "output": "Комиссия не больше двух с половиной процентов.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 522,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1353,
+        "total_tokens": 1364
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:не больше 2[,.]5\\s?%",
+          "forbidden:двух с половиной процентов"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_phone_noop",
+      "output": "Позвони по номеру +34 699 001 122, не по +34 699 001 121.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 536,
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 1382,
+        "total_tokens": 1422
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v00_control",
+      "case_id": "held_ru_version",
+      "output": "Обнови с версии 1.9 до версии 2.0, но не до 2.1.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 3663,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1364,
+        "total_tokens": 1387
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_account_noop",
+      "output": "Перевод на IBAN ES66 1234 5678 9012 3456 7890.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1595,
+      "usage": {
+        "completion_tokens": 34,
+        "prompt_tokens": 1429,
+        "total_tokens": 1463
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_digits_noop",
+      "output": "Invoice 2026-0081 totals €1,024.50; VAT is 21%; due 2026-09-30.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 557,
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1436,
+        "total_tokens": 1477
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_document_noop",
+      "output": "Номер expediente EX-07/2026-AB, паспорт 53 04 771122.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 494,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1424,
+        "total_tokens": 1453
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_en_literal_ordinal",
+      "output": "Her first novel made the second winter feel less lonely.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 490,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1406,
+        "total_tokens": 1417
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_en_range_negation",
+      "output": "Allow between 5 and 7 days, but no more than 7.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 545,
+      "usage": {
+        "completion_tokens": 16,
+        "prompt_tokens": 1408,
+        "total_tokens": 1424
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:5\\s*(?:[-–—]|to)\\s*7 days"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_es_ordinal_list",
+      "output": "1. Primero, revisar el NIE.\n2. Segundo, confirmar la fecha.\n3. Tercero, no cambiar el número.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 490,
+      "usage": {
+        "completion_tokens": 28,
+        "prompt_tokens": 1414,
+        "total_tokens": 1442
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+revisar el NIE",
+          "missing:(?mi)^\\s*2[.)]\\s+confirmar la fecha",
+          "missing:(?mi)^\\s*3[.)]\\s+no cambiar el número"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_es_percent",
+      "output": "La cobertura es del 99,5 %.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 496,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1408,
+        "total_tokens": 1418
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 98.11
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_date",
+      "output": "Документы поданы 02.02.2025.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 490,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1409,
+        "total_tokens": 1426
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:2(?:-го)? февраля"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_literal_ordinal",
+      "output": "Он впервые увидел второй берег, когда первый уже исчез в тумане.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 612,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1412,
+        "total_tokens": 1429
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_money_decimal",
+      "output": "Возврат составил 123,45 €.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 488,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1409,
+        "total_tokens": 1421
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_ordinal_list",
+      "output": "1. Открыть файл.\n2. Проверить сумму.\n3. Не исправлять IBAN.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 491,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1421,
+        "total_tokens": 1444
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_percent",
+      "output": "Готовность 100%, отклонение 0%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 502,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1407,
+        "total_tokens": 1420
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.94
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_percent_negation",
+      "output": "Комиссия не больше 2,5%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 1597,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1406,
+        "total_tokens": 1416
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_phone_noop",
+      "output": "Позвони по номеру +34 699 001 122, не по +34 699 001 121.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 673,
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 1435,
+        "total_tokens": 1475
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v03_multilingual_numbers",
+      "case_id": "held_ru_version",
+      "output": "Обнови с версии 1.9 до версии 2.0, но не до 2.1.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 490,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1417,
+        "total_tokens": 1440
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_account_noop",
+      "output": "Перевод на IBAN ES66 1234 5678 9012 3456 7890.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 556,
+      "usage": {
+        "completion_tokens": 34,
+        "prompt_tokens": 1473,
+        "total_tokens": 1507
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_digits_noop",
+      "output": "Invoice 2026-0081 totals €1,024.50; VAT is 21%; due 2026-09-30.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 558,
+      "usage": {
+        "completion_tokens": 41,
+        "prompt_tokens": 1480,
+        "total_tokens": 1521
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_document_noop",
+      "output": "Номер expediente EX-07/2026-AB, паспорт 53 04 771122.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 494,
+      "usage": {
+        "completion_tokens": 29,
+        "prompt_tokens": 1468,
+        "total_tokens": 1497
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_en_literal_ordinal",
+      "output": "Her first novel made the second winter feel less lonely.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 491,
+      "usage": {
+        "completion_tokens": 11,
+        "prompt_tokens": 1450,
+        "total_tokens": 1461
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_en_range_negation",
+      "output": "Allow between five and seven days, but no more than seven.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 489,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1452,
+        "total_tokens": 1465
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:5\\s*(?:[-–—]|to)\\s*7 days",
+          "missing:no more than 7",
+          "forbidden:between five and seven",
+          "forbidden:more than seven"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_es_ordinal_list",
+      "output": "Primero, revisar el NIE; segundo, confirmar la fecha; tercero, no cambiar el número.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 498,
+      "usage": {
+        "completion_tokens": 19,
+        "prompt_tokens": 1458,
+        "total_tokens": 1477
+      },
+      "gate": {
+        "passed": false,
+        "failures": [
+          "missing:(?mi)^\\s*1[.)]\\s+revisar el NIE",
+          "missing:(?mi)^\\s*2[.)]\\s+confirmar la fecha",
+          "missing:(?mi)^\\s*3[.)]\\s+no cambiar el número",
+          "list_count:0"
+        ],
+        "semantic_score": 49.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_es_percent",
+      "output": "La cobertura es del 99,5%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 554,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1452,
+        "total_tokens": 1462
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_date",
+      "output": "Документы поданы 2 февраля 2025 года.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 677,
+      "usage": {
+        "completion_tokens": 15,
+        "prompt_tokens": 1453,
+        "total_tokens": 1468
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_literal_ordinal",
+      "output": "Он впервые увидел второй берег, когда первый уже исчез в тумане.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 487,
+      "usage": {
+        "completion_tokens": 17,
+        "prompt_tokens": 1456,
+        "total_tokens": 1473
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_money_decimal",
+      "output": "Возврат составил €123,45.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 632,
+      "usage": {
+        "completion_tokens": 12,
+        "prompt_tokens": 1453,
+        "total_tokens": 1465
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 94.12
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_ordinal_list",
+      "output": "1. Открыть файл.\n2. Проверить сумму.\n3. Не исправлять IBAN.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 650,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1465,
+        "total_tokens": 1488
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_percent",
+      "output": "Готовность 100%, отклонение 0%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 504,
+      "usage": {
+        "completion_tokens": 13,
+        "prompt_tokens": 1451,
+        "total_tokens": 1464
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 93.94
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_percent_negation",
+      "output": "Комиссия не больше 2,5%.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 500,
+      "usage": {
+        "completion_tokens": 10,
+        "prompt_tokens": 1450,
+        "total_tokens": 1460
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 96.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_phone_noop",
+      "output": "Позвони по номеру +34 699 001 122, не по +34 699 001 121.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 556,
+      "usage": {
+        "completion_tokens": 40,
+        "prompt_tokens": 1479,
+        "total_tokens": 1519
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    },
+    {
+      "stage": "heldout",
+      "variant_id": "v11_examples",
+      "case_id": "held_ru_version",
+      "output": "Обнови с версии 1.9 до версии 2.0, но не до 2.1.",
+      "model_readback": "gemini-3.5-flash-lite",
+      "latency_ms": 501,
+      "usage": {
+        "completion_tokens": 23,
+        "prompt_tokens": 1461,
+        "total_tokens": 1484
+      },
+      "gate": {
+        "passed": true,
+        "failures": [],
+        "semantic_score": 100.0
+      }
+    }
+  ]
+}
