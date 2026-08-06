@@ -114,11 +114,22 @@ enum AIProvider: String, CaseIterable {
                 "gemini-3.5-flash",
                 "gemini-3.1-pro-preview",
                 "gemini-3.1-flash-lite",
+                "gemini-3-flash-preview",
+                "gemini-2.5-pro",
+                "gemini-2.5-flash",
                 "gemini-2.5-flash-lite",
             ]
         case .anthropic:
             return [
+                "claude-fable-5",
+                "claude-opus-5",
+                "claude-opus-4-8",
+                "claude-opus-4-7",
+                "claude-opus-4-6",
+                "claude-opus-4-5-20251101",
                 "claude-sonnet-5",
+                "claude-sonnet-4-6",
+                "claude-sonnet-4-5-20250929",
                 "claude-haiku-4-5",
             ]
         case .openAI:
@@ -187,6 +198,10 @@ struct OllamaRefreshResult {
 }
 
 class AIService: ObservableObject {
+    private static let enhancementFallbackEnabledKey = "EnhancementFallbackEnabled"
+    private static let enhancementFallbackProvider1Key = "EnhancementFallbackProvider1"
+    private static let enhancementFallbackProvider2Key = "EnhancementFallbackProvider2"
+
     @Published var apiKey: String = ""
     @Published var isAPIKeyValid: Bool = false
     @Published var customBaseURL: String = UserDefaults.standard.string(forKey: "customProviderBaseURL") ?? "" {
@@ -198,6 +213,24 @@ class AIService: ObservableObject {
         didSet {
             userDefaults.set(customModel, forKey: "customProviderModel")
         }
+    }
+    @Published var isEnhancementFallbackEnabled = UserDefaults.standard.bool(
+        forKey: AIService.enhancementFallbackEnabledKey
+    ) {
+        didSet {
+            userDefaults.set(isEnhancementFallbackEnabled, forKey: Self.enhancementFallbackEnabledKey)
+            NotificationCenter.default.post(name: .AppSettingsDidChange, object: nil)
+        }
+    }
+    @Published var fallbackProvider1 = AIService.loadFallbackProvider(
+        forKey: AIService.enhancementFallbackProvider1Key
+    ) {
+        didSet { saveFallbackProvider(fallbackProvider1, forKey: Self.enhancementFallbackProvider1Key) }
+    }
+    @Published var fallbackProvider2 = AIService.loadFallbackProvider(
+        forKey: AIService.enhancementFallbackProvider2Key
+    ) {
+        didSet { saveFallbackProvider(fallbackProvider2, forKey: Self.enhancementFallbackProvider2Key) }
     }
     @Published var selectedProvider: AIProvider {
         didSet {
@@ -311,6 +344,37 @@ class AIService: ObservableObject {
             return CustomAIProviderManager.shared.availableModelNames
         }
         return provider.availableModels
+    }
+
+    static func normalizedProviderChain(
+        primary: AIProvider,
+        fallbacks: [AIProvider?],
+        fallbackEnabled: Bool
+    ) -> [AIProvider] {
+        var providers = [primary]
+        if fallbackEnabled {
+            providers.append(contentsOf: fallbacks.compactMap { $0 })
+        }
+
+        var seen = Set<AIProvider>()
+        return providers.filter { $0.supportsEnhancement && seen.insert($0).inserted }
+    }
+
+    func isProviderConfiguredForEnhancement(_ provider: AIProvider, modelName: String? = nil) -> Bool {
+        switch provider {
+        case .voiceInkRefine:
+            return voiceInkRefineService.isAvailableInModes
+        case .ollama:
+            return !provider.baseURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        case .localCLI:
+            return localCLIService.isConfigured
+        case .custom:
+            return CustomAIProviderManager.shared.requestConfiguration(
+                forModel: modelName ?? selectedModel(for: provider)
+            ) != nil
+        default:
+            return provider.requiresAPIKey && APIKeyManager.shared.hasAPIKey(forProvider: provider.rawValue)
+        }
     }
 
     init() {
@@ -692,6 +756,25 @@ class AIService: ObservableObject {
             isAPIKeyValid = localCLIService.isConfigured
         }
         objectWillChange.send()
+        NotificationCenter.default.post(name: .AppSettingsDidChange, object: nil)
+    }
+
+    private static func loadFallbackProvider(forKey key: String) -> AIProvider? {
+        guard let rawValue = UserDefaults.standard.string(forKey: key),
+            let provider = AIProvider(rawValue: rawValue),
+            provider.supportsEnhancement
+        else {
+            return nil
+        }
+        return provider
+    }
+
+    private func saveFallbackProvider(_ provider: AIProvider?, forKey key: String) {
+        if let provider {
+            userDefaults.set(provider.rawValue, forKey: key)
+        } else {
+            userDefaults.removeObject(forKey: key)
+        }
         NotificationCenter.default.post(name: .AppSettingsDidChange, object: nil)
     }
 

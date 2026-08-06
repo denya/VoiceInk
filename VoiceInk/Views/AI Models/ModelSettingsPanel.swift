@@ -84,6 +84,7 @@ private struct TranscriptionModelSettingsView: View {
 }
 
 private struct EnhancementModelSettingsView: View {
+    @EnvironmentObject private var aiService: AIService
     @AppStorage("SkipShortEnhancement") private var isSkipShortEnhancementEnabled = true
     @AppStorage("ShortEnhancementWordThreshold") private var shortEnhancementWordThreshold = 3
     @AppStorage("EnhancementTimeoutSeconds") private var enhancementTimeoutSeconds = 7
@@ -112,6 +113,19 @@ private struct EnhancementModelSettingsView: View {
             }
 
             Section {
+                Toggle("Fallback providers", isOn: $aiService.isEnhancementFallbackEnabled)
+
+                if aiService.isEnhancementFallbackEnabled {
+                    fallbackPicker("Fallback 1", selection: $aiService.fallbackProvider1, excluding: aiService.fallbackProvider2)
+                    fallbackPicker("Fallback 2", selection: $aiService.fallbackProvider2, excluding: aiService.fallbackProvider1)
+                }
+            } header: {
+                Text("Provider Failover")
+            } footer: {
+                Text("If a Mode's provider fails, VoiceInk tries these configured providers in order.")
+            }
+
+            Section {
                 Picker("Timeout duration", selection: $enhancementTimeoutSeconds) {
                     ForEach([3, 5, 7, 10, 15, 20, 30, 40, 50, 60], id: \.self) { seconds in
                         Text(String(format: String(localized: "%d seconds"), seconds)).tag(seconds)
@@ -136,6 +150,25 @@ private struct EnhancementModelSettingsView: View {
         .formStyle(.grouped)
         .scrollContentBackground(.hidden)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private func fallbackPicker(
+        _ title: LocalizedStringKey,
+        selection: Binding<AIProvider?>,
+        excluding excluded: AIProvider?
+    ) -> some View {
+        Picker(title, selection: selection) {
+            Text("None").tag(AIProvider?.none)
+            ForEach(
+                AIProvider.allCases.filter {
+                    $0.supportsEnhancement && ($0 == selection.wrappedValue || $0 != excluded)
+                },
+                id: \.self
+            ) { provider in
+                Text(provider.rawValue).tag(Optional(provider))
+            }
+        }
+        .pickerStyle(.menu)
     }
 }
 

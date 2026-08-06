@@ -86,16 +86,32 @@ class AIEnhancementService: ObservableObject {
 
         guard configuration.prompt != nil else { return false }
 
-        if provider == .localCLI || provider == .ollama {
-            return true
+        return providerChain(startingWith: provider).contains { candidate in
+            aiService.isProviderConfiguredForEnhancement(
+                candidate,
+                modelName: resolvedModelName(
+                    for: candidate,
+                    primaryProvider: provider,
+                    primaryModelName: configuration.modelName
+                )
+            )
         }
+    }
 
-        if provider == .custom {
-            guard let modelName = configuration.modelName else { return false }
-            return CustomAIProviderManager.shared.requestConfiguration(forModel: modelName) != nil
-        }
+    private func providerChain(startingWith primaryProvider: AIProvider) -> [AIProvider] {
+        AIService.normalizedProviderChain(
+            primary: primaryProvider,
+            fallbacks: [aiService.fallbackProvider1, aiService.fallbackProvider2],
+            fallbackEnabled: aiService.isEnhancementFallbackEnabled
+        )
+    }
 
-        return APIKeyManager.shared.hasAPIKey(forProvider: provider.rawValue)
+    private func resolvedModelName(
+        for provider: AIProvider,
+        primaryProvider: AIProvider,
+        primaryModelName: String?
+    ) -> String {
+        provider == primaryProvider ? (primaryModelName ?? provider.defaultModel) : aiService.selectedModel(for: provider)
     }
 
     private func waitForRateLimit() async throws {
@@ -235,133 +251,158 @@ class AIEnhancementService: ObservableObject {
             contextSnapshot: contextSnapshot
         )
 
-        if provider == .ollama {
-            do {
-                let result = try await aiService.enhanceWithOllama(
-                    text: formattedText,
-                    systemPrompt: systemMessage,
-                    model: modelName,
-                    timeout: baseTimeout
-                )
-                return (
-                    AIEnhancementOutputFilter.filter(result, preservingMarkupFrom: text),
-                    systemMessage,
-                    formattedText
-                )
-            } catch {
-                if let localError = error as? LocalAIError {
-                    switch localError {
-                    case .timeout:
-                        throw EnhancementError.timeout
-                    default:
-                        throw EnhancementError.customError(
-                            localError.errorDescription ?? "An unknown Ollama error occurred.")
-                    }
-                } else {
-                    throw EnhancementError.customError(error.localizedDescription)
-                }
-            }
-        }
+        let providers = providerChain(startingWith: provider)
+        var failures: [(provider: AIProvider, error: EnhancementError)] = []
+        var configuredAttemptCount = 0
 
-        if provider == .localCLI {
-            do {
-                let result = try await aiService.enhanceWithLocalCLI(
-                    systemPrompt: systemMessage, userPrompt: formattedText)
-                return (
-                    AIEnhancementOutputFilter.filter(result, preservingMarkupFrom: text),
-                    systemMessage,
-                    formattedText
-                )
-            } catch {
-                if let localError = error as? LocalCLIError {
-                    throw EnhancementError.customError(
-                        localError.errorDescription ?? "An unknown Local CLI error occurred.")
-                } else {
-                    throw EnhancementError.customError(error.localizedDescription)
-                }
-            }
-        }
-
-        try await waitForRateLimit()
-
-        do {
-            let result: String
-            switch provider {
-            case .gemini:
-                result = try await GeminiLLMClient.chatCompletion(
-                    apiKey: try apiKey(for: provider, modelName: modelName),
-                    model: modelName,
-                    messages: [.user(formattedText)],
-                    systemPrompt: systemMessage,
-                    thinkingLevel: ReasoningConfig.geminiThinkingLevel(for: modelName),
-                    store: false,
-                    timeout: baseTimeout
-                )
-            case .anthropic:
-                result = try await AnthropicLLMClient.chatCompletion(
-                    apiKey: try apiKey(for: provider, modelName: modelName),
-                    model: modelName,
-                    messages: [.user(formattedText)],
-                    systemPrompt: systemMessage,
-                    timeout: baseTimeout
-                )
-            case .custom:
-                guard
-                    let customConfiguration = CustomAIProviderManager.shared.requestConfiguration(forModel: modelName),
-                    let baseURL = URL(string: customConfiguration.baseURL)
-                else {
-                    throw EnhancementError.notConfigured
-                }
-                result = try await OpenAILLMClient.chatCompletion(
-                    baseURL: baseURL,
-                    apiKey: customConfiguration.apiKey,
-                    model: customConfiguration.modelName,
-                    messages: [.user(formattedText)],
-                    systemPrompt: systemMessage,
-                    temperature: 0.3,
-                    timeout: baseTimeout
-                )
-            default:
-                guard let baseURL = URL(string: provider.baseURL) else {
-                    throw EnhancementError.customError(
-                        "\(provider.rawValue) has an invalid API endpoint URL. Please update it in AI settings.")
-                }
-                let temperature = modelName.lowercased().hasPrefix("gpt-5") ? 1.0 : 0.3
-                let reasoningEffort = ReasoningConfig.getReasoningParameter(
-                    for: provider,
-                    modelName: modelName
-                )
-                let extraBody = ReasoningConfig.getExtraBodyParameters(
-                    for: provider,
-                    modelName: modelName
-                )
-                result = try await OpenAILLMClient.chatCompletion(
-                    baseURL: baseURL,
-                    apiKey: try apiKey(for: provider, modelName: modelName),
-                    model: modelName,
-                    messages: [.user(formattedText)],
-                    systemPrompt: systemMessage,
-                    temperature: temperature,
-                    reasoningEffort: reasoningEffort,
-                    extraBody: extraBody,
-                    timeout: baseTimeout
-                )
-            }
-            return (
-                AIEnhancementOutputFilter.filter(
-                    result.trimmingCharacters(in: .whitespacesAndNewlines),
-                    preservingMarkupFrom: text
-                ),
-                systemMessage,
-                formattedText
+        for candidate in providers {
+            let candidateModel = resolvedModelName(
+                for: candidate,
+                primaryProvider: provider,
+                primaryModelName: modelName
             )
-        } catch let error as LLMKitError {
-            throw mapLLMKitError(error)
-        } catch let error as EnhancementError {
-            throw error
-        } catch {
-            throw EnhancementError.customError(error.localizedDescription)
+            guard aiService.isProviderConfiguredForEnhancement(candidate, modelName: candidateModel) else {
+                failures.append((candidate, .notConfigured))
+                continue
+            }
+
+            configuredAttemptCount += 1
+            do {
+                let result = try await makeProviderRequest(
+                    provider: candidate,
+                    modelName: candidateModel,
+                    originalText: text,
+                    formattedText: formattedText,
+                    systemMessage: systemMessage
+                )
+                if candidate != providers.first {
+                    logger.notice("Enhancement fallback succeeded with \(candidate.rawValue, privacy: .public).")
+                }
+                return (
+                    AIEnhancementOutputFilter.filter(
+                        result.trimmingCharacters(in: .whitespacesAndNewlines),
+                        preservingMarkupFrom: text
+                    ),
+                    candidate == .voiceInkRefine ? nil : systemMessage,
+                    candidate == .voiceInkRefine ? text : formattedText
+                )
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                let enhancementError = normalizeEnhancementError(error)
+                failures.append((candidate, enhancementError))
+                logger.warning(
+                    "Enhancement provider \(candidate.rawValue, privacy: .public) failed: \(enhancementError.localizedDescription, privacy: .public)"
+                )
+            }
         }
+
+        guard let lastFailure = failures.last else { throw EnhancementError.notConfigured }
+        if configuredAttemptCount <= 1 {
+            throw failures.reversed().first { !isNotConfigured($0.error) }?.error ?? lastFailure.error
+        }
+        throw EnhancementError.customError(fallbackFailureSummary(failures))
+    }
+
+    private func makeProviderRequest(
+        provider: AIProvider,
+        modelName: String,
+        originalText: String,
+        formattedText: String,
+        systemMessage: String
+    ) async throws -> String {
+        switch provider {
+        case .voiceInkRefine:
+            return try await aiService.enhanceWithVoiceInkRefine(transcript: originalText)
+        case .ollama:
+            return try await aiService.enhanceWithOllama(
+                text: formattedText,
+                systemPrompt: systemMessage,
+                model: modelName,
+                timeout: baseTimeout
+            )
+        case .localCLI:
+            return try await aiService.enhanceWithLocalCLI(
+                systemPrompt: systemMessage,
+                userPrompt: formattedText
+            )
+        case .gemini:
+            try await waitForRateLimit()
+            return try await GeminiLLMClient.chatCompletion(
+                apiKey: try apiKey(for: provider, modelName: modelName),
+                model: modelName,
+                messages: [.user(formattedText)],
+                systemPrompt: systemMessage,
+                thinkingLevel: ReasoningConfig.geminiThinkingLevel(for: modelName),
+                store: false,
+                timeout: baseTimeout
+            )
+        case .anthropic:
+            try await waitForRateLimit()
+            return try await AnthropicLLMClient.chatCompletion(
+                apiKey: try apiKey(for: provider, modelName: modelName),
+                model: modelName,
+                messages: [.user(formattedText)],
+                systemPrompt: systemMessage,
+                timeout: baseTimeout
+            )
+        case .custom:
+            try await waitForRateLimit()
+            guard let configuration = CustomAIProviderManager.shared.requestConfiguration(forModel: modelName),
+                let baseURL = URL(string: configuration.baseURL)
+            else {
+                throw EnhancementError.notConfigured
+            }
+            return try await OpenAILLMClient.chatCompletion(
+                baseURL: baseURL,
+                apiKey: configuration.apiKey,
+                model: configuration.modelName,
+                messages: [.user(formattedText)],
+                systemPrompt: systemMessage,
+                temperature: 0.3,
+                timeout: baseTimeout
+            )
+        default:
+            try await waitForRateLimit()
+            guard let baseURL = URL(string: provider.baseURL) else {
+                throw EnhancementError.customError("\(provider.rawValue) has an invalid API endpoint URL.")
+            }
+            return try await OpenAILLMClient.chatCompletion(
+                baseURL: baseURL,
+                apiKey: try apiKey(for: provider, modelName: modelName),
+                model: modelName,
+                messages: [.user(formattedText)],
+                systemPrompt: systemMessage,
+                temperature: modelName.lowercased().hasPrefix("gpt-5") ? 1.0 : 0.3,
+                reasoningEffort: ReasoningConfig.getReasoningParameter(for: provider, modelName: modelName),
+                extraBody: ReasoningConfig.getExtraBodyParameters(for: provider, modelName: modelName),
+                timeout: baseTimeout
+            )
+        }
+    }
+
+    private func normalizeEnhancementError(_ error: Error) -> EnhancementError {
+        if let error = error as? EnhancementError { return error }
+        if let error = error as? LLMKitError { return mapLLMKitError(error) }
+        if let error = error as? LocalAIError {
+            if case .timeout = error { return .timeout }
+            return .customError(error.errorDescription ?? "An unknown Ollama error occurred.")
+        }
+        if let error = error as? LocalCLIError {
+            return .customError(error.errorDescription ?? "An unknown Local CLI error occurred.")
+        }
+        return .customError(error.localizedDescription)
+    }
+
+    private func fallbackFailureSummary(_ failures: [(provider: AIProvider, error: EnhancementError)]) -> String {
+        "All enhancement providers failed. " + failures
+            .map { "\($0.provider.rawValue): \($0.error.errorDescription ?? $0.error.localizedDescription)" }
+            .joined(separator: "; ")
+    }
+
+    private func isNotConfigured(_ error: EnhancementError) -> Bool {
+        if case .notConfigured = error { return true }
+        return false
     }
 
     private func apiKey(for provider: AIProvider, modelName: String) throws -> String {
